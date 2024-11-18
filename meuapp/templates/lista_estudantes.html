@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="../static/css/lista_estudantes.css">
+    <title>Lista de Estudantes</title>
+</head>
+<body>
+    <div class="container">
+        <div class="container">
+        <!-- Barra lateral -->
+        <div class="sidebar">
+            <h2>Menu</h2>
+            <ul>
+                <li><a href="{% url 'lista_estudantes' %}">Estudantes</a></li>
+                <li><a href="{% url 'lista_professores' %}">Professores</a></li>
+                <li><a href="{% url 'lista_classes' %}">Classes</a></li>
+                <li><a href="{% url 'lista_aulas' %}">Aulas</a></li>
+            </ul>
+        </div>
+        <h1>Lista de Estudantes</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th>Telefone</th>
+                    <th>CPF</th>
+                    <th>RG</th>
+                    <th>NIS</th>
+                    <th>Observação</th>
+                    <th>Grupo de Prioridade</th>
+                    <th>Registro</th>
+                    <th>Encaminhamento</th>
+                    <th>URL Imagem</th>
+                    <th>Rua</th>
+                    <th>Bairro</th>
+                    <th>Cidade</th>
+                    <th>Estado</th>
+                    <th>CEP</th>
+                    <th>Data de Criação</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for estudante in estudantes %}
+                <tr>
+                    <td>{{ estudante.nome }}</td>
+                    <td>{{ estudante.email }}</td>
+                    <td>{{ estudante.telefone }}</td>
+                    <td>{{ estudante.cpf }}</td>
+                    <td>{{ estudante.rg }}</td>
+                    <td>{{ estudante.nis|default:"N/A" }}</td>
+                    <td>{{ estudante.observacao|default:"N/A" }}</td>
+                    <td>{{ estudante.grupoprioridade|default:"N/A" }}</td>
+                    <td>{{ estudante.registro }}</td>
+                    <td>{{ estudante.encaminhamento|default:"N/A" }}</td>
+                    <td>{{ estudante.URLimagem|default:"N/A" }}</td>
+                    <td>{{ estudante.rua }}</td>
+                    <td>{{ estudante.bairro }}</td>
+                    <td>{{ estudante.cidade }}</td>
+                    <td>{{ estudante.estado }}</td>
+                    <td>{{ estudante.cep }}</td>
+                    <td>{{ estudante.dataCriacao|date:"h:i:s d/m/Y" }}</td> 
+                {% empty %}
+                <tr>
+                    <td colspan="17">Nenhum estudante encontrado.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
