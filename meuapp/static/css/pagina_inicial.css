@@ -50,7 +50,7 @@ body {
 
 .sidebar ul li a.active,
 .sidebar ul li a:hover {
-    background-color: #4caf50;
+    background-color: #1e293b;
     color: #fff;
 }
 
@@ -75,7 +75,7 @@ body {
 .btn-adicionar {
     display: flex;
     align-items: center;
-    background-color: #4caf50;
+    background-color: #1e293b;
     color: #fff;
     padding: 10px 15px;
     border: none;
@@ -86,7 +86,7 @@ body {
 }
 
 .btn-adicionar:hover {
-    background-color: #388e3c;
+    background-color: #1e293b;
 }
 
 .btn-adicionar .icon {
@@ -103,7 +103,7 @@ body {
 
 header {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 50px;
 }
 
 header h1 {
@@ -118,10 +118,11 @@ header p {
 
 /* Cartões (Dashboard) */
 .dashboard-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
-    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+    gap: 50px;
 }
 
 .card {
@@ -130,20 +131,22 @@ header p {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     padding: 20px;
     text-align: center;
+    width: 300px;
+    backdrop-filter: blur(8px);
 }
 
 .card h3 {
-    font-size: 1.8em;
-    margin-bottom: 10px;
+    font-size: 2em;
+    margin-bottom: 15px;
 }
 
 .card p {
-    font-size: 1em;
+    font-size: 2em;
     margin-bottom: 15px;
 }
 
 .card a {
-    background-color: #4CAF50;
+    background-color: #1e293b;
     color: white;
     text-decoration: none;
     padding: 10px 20px;
@@ -152,5 +155,6 @@ header p {
 }
 
 .card a:hover {
-    background-color: #45a049;
+    background-color: #243eb2;
 }
+

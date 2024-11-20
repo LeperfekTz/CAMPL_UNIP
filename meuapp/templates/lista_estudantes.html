@@ -35,22 +35,20 @@
                         <tr>
                             <th>Nome</th>
                             <th>Email</th>
-                            <th>Telefone</th>
                             <th>CPF</th>
-                            <th>RG</th>
                             <th>Responsavel</th>
+                            <th>Contato</th>
                             <th>Ação</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for estudante in estudantes %}
                         <tr>
-                            <td>{{ estudante.nome }}</td>
-                            <td>{{ estudante.email }}</td>
-                            <td>{{ estudante.telefone }}</td>
-                            <td>{{ estudante.cpf }}</td>
-                            <td>{{ estudante.rg }}</td>
-                            <td>{{ reponsavel.nome }} </td>
+                            <td>{{ estudante.NOME }}</td>
+                            <td>{{ estudante.EMAIL }}</td>
+                            <td>{{ estudante.CPF }}</td>
+                            <td>{{ estudante.RESPONSAVEL }}</td>
+                            <td>{{ estudante.TELEFONE }}</td>        
                             <td>
                                 <a href="{% url 'editar_estudante' estudante.id %}" class="btn-editar">
                                     <img src="../static/icons/editar.svg" alt="Editar" class="icon"> Editar
