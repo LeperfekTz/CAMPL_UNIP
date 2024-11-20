@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="../static/css/editar_professor.css">
+    <title>Editar Estudante</title>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <h1>Editar Estudante: {{ usuario.nome }}</h1>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ form.as_p }}
+                </div>
+                <button type="submit" class="submit-button">Salvar</button>
+            </form>
+            <a href="{% url 'lista_professores' %}" class="back-link">Voltar para a lista de professores</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,4 +1,3 @@
-<!-- templates/base.html -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -6,14 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>App Escola</title>
     {% load static %}
-    <link rel="stylesheet" href="../static/css/pagina_inicial.css">
+    <link rel="stylesheet" href="{% static 'css/pagina_inicial.css' %}">
+    <link rel="icon" href="{% static 'images/icon.png' %}" type="image/png">
 </head>
 <body>
     <div class="container">
         <!-- Barra lateral -->
         <div class="sidebar">
-            <h2>Menu</h2>
+            <div class="sidebar-header">
+                <h2>Menu</h2>
+            </div>
             <ul>
+                <li><a href="{% url 'pagina_inicial' %}">Início</a></li>
                 <li><a href="{% url 'lista_estudantes' %}">Estudantes</a></li>
                 <li><a href="{% url 'lista_professores' %}">Professores</a></li>
                 <li><a href="{% url 'lista_classes' %}">Classes</a></li>
@@ -23,9 +26,37 @@
 
         <!-- Conteúdo principal -->
         <div class="content">
-            {% block content %}
-            <!-- O conteúdo da página será carregado aqui -->
-            {% endblock %}
+            <header>
+                <h1>Bem-vindo ao Painel de Controle</h1>
+                <p>Gerencie estudantes, professores, classes e aulas de forma simples.</p>
+            </header>
+
+            <div class="dashboard-cards">
+
+                <div class="card">
+                    <h3>Estudantes</h3>
+                    <p>{{ total_estudantes }}</p> <!-- Certifique-se de usar essa linha -->
+                    <a href="{% url 'lista_estudantes' %}">Ver Estudantes</a>
+                </div>
+
+                <div class="card">
+                    <h3>Professores</h3>
+                    <p>{{ total_professores }}</p>
+                    <a href="{% url 'lista_professores' %}">Ver Professores</a>
+                </div>
+
+                <div class="card">
+                    <h3>Classes</h3>
+                    <p>{{total_classe}} </p>
+                    <a href="{% url 'lista_classes' %}">Ver Classes</a>
+                </div>
+
+                <div class="card">
+                    <h3>Aulas</h3>
+                    <p>{{total_aulas}}</p>
+                    <a href="{% url 'lista_aulas' %}">Ver Aulas</a>
+                </div>
+            </div>
         </div>
     </div>
 </body>

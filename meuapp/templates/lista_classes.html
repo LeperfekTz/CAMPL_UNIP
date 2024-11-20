@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>App Escola</title>
     {% load static %}
-    <link rel="stylesheet" href="../static/css/pagina_inicial.css">
+    <link rel="stylesheet" href="">
 </head>
 <body>
     <div class="container">
@@ -14,6 +14,7 @@
         <div class="sidebar">
             <h2>Menu</h2>
             <ul>
+                <li><a href="{% url 'pagina_inicial' %}">Início</a></li>
                 <li><a href="{% url 'lista_estudantes' %}">Estudantes</a></li>
                 <li><a href="{% url 'lista_professores' %}">Professores</a></li>
                 <li><a href="{% url 'lista_classes' %}">Classes</a></li>

@@ -3,50 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% load static %}
-    <link rel="stylesheet" href="../static/css/lista_professores.css">
     <title>Lista de Professores</title>
+    <link rel="stylesheet" href="../static/css/lista_professores.css">
 </head>
 <body>
     <div class="container">
         <!-- Barra lateral -->
-        <div class="sidebar">
+        <aside class="sidebar">
             <h2>Menu</h2>
             <ul>
+                <li><a href="{% url 'pagina_inicial' %}">Início</a></li>
                 <li><a href="{% url 'lista_estudantes' %}">Estudantes</a></li>
                 <li><a href="{% url 'lista_professores' %}">Professores</a></li>
                 <li><a href="{% url 'lista_classes' %}">Classes</a></li>
                 <li><a href="{% url 'lista_aulas' %}">Aulas</a></li>
             </ul>
-        </div>
+        </aside>
 
         <!-- Conteúdo principal -->
-        <div class="main-content">
-            <h1>Lista de Professores</h1>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Nome</th>
-                        <th>Email</th>
-                        <th>Telefone</th>
-                        <th>Ação</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for professor in professores %}
-                    <tr>
-                        <td>{{ professor.nome }}</td>
-                        <td>{{ professor.email }}</td>
-                        <td>{{ professor.telefone }}</td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="3">Nenhum professor encontrado.</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+        <main class="main-content">
+            <header class="main-header">
+                <h1>Lista de Professores</h1>
+                <button class="btn-adicionar">
+                    <img src="../static/icons/add.svg" alt="Adicionar" class="icon"> Adicionar Professor
+                </button>
+            </header>
+            
+            <section class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Telefone</th>
+                            <th>Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for professor in professores %}
+                        <tr>
+                            <td>{{ professor.nome }}</td>
+                            <td>{{ professor.email }}</td>
+                            <td>{{ professor.telefone }}</td>
+                            <td>
+                                <a href="{% url 'editar_professor' professor.id %}" class="btn-editar">
+                                    <img src="../static/icons/editar.svg" alt="Editar" class="icon"> Editar
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4">Nenhum professor encontrado.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+        </main>
     </div>
 </body>
 </html>
