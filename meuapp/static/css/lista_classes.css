@@ -1,0 +1,70 @@
+/* styles.css */
+body {
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    display: flex;
+}
+
+.sidebar {
+    width: 200px;
+    padding: 20px;
+    background-color: #333;
+    color: white;
+}
+
+.sidebar h2 {
+    margin-top: 0;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 10px 0;
+}
+
+.sidebar ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+.sidebar ul li a:hover {
+    text-decoration: underline;
+}
+
+.content {
+    margin-left: 220px;
+    padding: 20px;
+}
+
+h2 {
+    margin-bottom: 20px;
+}
+
+.agenda {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.agenda th, .agenda td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.agenda th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.agenda td {
+    min-width: 100px;
+}
+
+.agenda td div {
+    margin: 5px 0;
+}

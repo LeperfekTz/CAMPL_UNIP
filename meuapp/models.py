@@ -1,9 +1,21 @@
 from django.db import models
 
+from django.db import models
+
 class Usuario(models.Model):
-    nome = models.CharField(max_length=50)
-    email = models.EmailField(max_length=50, unique=True)
-    telefone = models.CharField(max_length=50)
+    id = models.AutoField(primary_key=True)
+    nome = models.CharField(max_length=255)
+    email = models.EmailField()
+    senha = models.CharField(max_length=255)
+    URLimagem = models.URLField()
+    telefone = models.CharField(max_length=15, blank=True, null=True)
+    rua = models.CharField(max_length=255, blank=True, null=True)
+    bairro = models.CharField(max_length=255, blank=True, null=True)
+    cidade = models.CharField(max_length=255, blank=True, null=True)
+    estado = models.CharField(max_length=2, blank=True, null=True)
+    cep = models.CharField(max_length=10, blank=True, null=True)
+    papel = models.CharField(max_length=50)
+    dataCriacao = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.nome
@@ -32,14 +44,17 @@ class Estudante(models.Model):
     dataCriacao = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
+        
         return self.nome
 
     class Meta:
         db_table = 'estudante'  # Nome da tabela no banco de dados
 
 class Professor(models.Model):
-    usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, related_name='professor')  # Relacionamento com Usuario
-    telefone = models.CharField(max_length=50)
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, to_field='id', db_column='idusuario')
+    dataCriacao = models.DateTimeField(auto_now_add=True)
+    telefone = models.CharField(max_length=15, blank=True, null=True)  # Adicionando o campo telefone
+
 
     def __str__(self):
         return self.usuario.nome
@@ -86,15 +101,25 @@ class Classe(models.Model):
     class Meta:
         db_table = 'classe'  # Nome da tabela no banco de dados
 
-
 class Aula(models.Model):
     nome = models.CharField(max_length=25)
-    professor = models.ForeignKey(Professor, on_delete=models.CASCADE, related_name='aulas')  # Relacionamento com professor
+    professor = models.ForeignKey('Professor', on_delete=models.CASCADE, related_name='aulas')  # Relacionamento com professor
     dataCriacao = models.DateTimeField(auto_now_add=True)
+
+    # Novo campo dia com as opções de dias da semana
+    dia_choices = [
+        ('Segunda', 'Segunda'),
+        ('Terça', 'Terça'),
+        ('Quarta', 'Quarta'),
+        ('Quinta', 'Quinta'),
+        ('Sexta', 'Sexta'),
+    ]
+    dia = models.CharField(max_length=7, choices=dia_choices)
 
     def __str__(self):
         return self.nome
 
     class Meta:
         db_table = 'aula'  # Nome da tabela no banco de dados
+
 

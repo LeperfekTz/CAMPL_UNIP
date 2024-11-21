@@ -128,13 +128,18 @@ table tr:nth-child(even) {
 table .btn-editar {
     display: inline-flex;
     align-items: center;
-    color: #007bff;
+    color: #517dec;
     text-decoration: none;
     font-size: 0.9rem;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: #fff;
+    border: 1px solid #ddd;
 }
 
 table .btn-editar:hover {
-    text-decoration: underline;
+    background-color: #41d46f;
+    color: #fff;
 }
 
 table .btn-editar .icon {
@@ -157,3 +162,4 @@ table .btn-editar .icon {
         padding: 20px;
     }
 }
+

@@ -1,124 +1,91 @@
-/* Estilos gerais para o layout */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+/* Reset básico */
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
 }
 
+body {
+    background-color: #f4f5f7;
+    color: #333;
+}
+
+/* Estrutura geral */
 .container {
     display: flex;
+    min-height: 100vh;
 }
-
+/* Barra lateral */
 .sidebar {
-    width: 200px;
-    background-color: #333;
-    color: white;
+    width: 250px;
+    background-color: #1e293b;
+    color: #fff;
     padding: 20px;
 }
 
-.sidebar-header img {
-    width: 100%;
-    height: auto;
+.sidebar h2 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    text-align: center;
 }
 
 .sidebar ul {
     list-style-type: none;
-    padding: 0;
 }
 
 .sidebar ul li {
-    margin: 10px 0;
+    margin-bottom: 15px;
 }
 
 .sidebar ul li a {
-    color: white;
+    color: #cbd5e1;
     text-decoration: none;
-}
-
-.sidebar ul li a:hover {
-    background-color: #575757;
-}
-
-.content {
-    flex: 1;
-    padding: 20px;
-}
-
-header {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-h1 {
-    color: #4CAF50;
-}
-
-h2 {
-    margin-top: 20px;
-}
-
-/* Estilos para a grid da agenda */
-.agenda-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr; /* 5 colunas para os dias */
-    grid-template-rows: auto repeat(10, 50px); /* 10 linhas para as horas */
-    gap: 1px;
-    border: 1px solid #ccc;
-    margin-top: 20px;
-}
-
-.agenda-grid .day-header {
-    background-color: #4CAF50;
-    color: white;
-    text-align: center;
-    padding: 10px;
-}
-
-.agenda-grid .time-slot {
-    border: 1px solid #ccc;
-    padding: 10px;
-    text-align: center;
-}
-
-.agenda-grid .time-slot input {
-    width: 100%;
-    padding: 5px;
-}
-
-.agenda-grid .time-slot.busy {
-    background-color: #ffcccc;
-}
-
-/* Estilos para o formulário de agendamento */
-.form-section {
-    margin-top: 20px;
-}
-
-label {
-    display: block;
-    margin-bottom: 5px;
-}
-
-input[type="text"],
-input[type="time"],
-select {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-button {
-    background-color: #4CAF50;
-    color: white;
+    font-size: 1rem;
     padding: 10px 15px;
-    border: none;
+    display: block;
     border-radius: 5px;
-    cursor: pointer;
 }
 
-button:hover {
-    background-color: #45a049;
+.sidebar ul li a.active,
+.sidebar ul li a:hover {
+    background-color: #4caf50;
+    color: #fff;
+}
+
+/* Conteúdo principal */
+.content {
+  flex: 1;
+  padding: 20px;
+}
+
+.schedule-container {
+  margin: 0 auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  border: 1px solid #e5e5e5;
+  padding: 10px;
+  text-align: center;
+}
+
+th {
+  background-color: #f1f5f9;
+  font-weight: bold;
+  color: #333;
+}
+
+td {
+  background-color: #f9fbfc;
+  color: #333;
 }

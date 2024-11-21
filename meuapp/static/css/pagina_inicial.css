@@ -50,9 +50,10 @@ body {
 
 .sidebar ul li a.active,
 .sidebar ul li a:hover {
-    background-color: #1e293b;
+    background-color: #4caf50;
     color: #fff;
 }
+
 
 /* Conteúdo principal */
 .main-content {
@@ -157,4 +158,5 @@ header p {
 .card a:hover {
     background-color: #243eb2;
 }
+
 

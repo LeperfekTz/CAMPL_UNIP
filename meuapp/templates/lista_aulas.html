@@ -1,111 +1,115 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agenda de Aulas</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/lista_aulas.css' %}">
-    <link rel="icon" href="{% static 'images/icon.png' %}" type="image/png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>App Escola</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/lista_aulas.css' %}" />
 </head>
 <body>
-    <div class="container">
-        <!-- Barra lateral -->
-        <div class="sidebar">
-            <div class="sidebar-header">
-                <img src="{% static 'images/logo.png' %}" alt="Logo">
-                <h2>Menu</h2>
-            </div>
-            <ul>
-                <li><a href="{% url 'pagina_inicial' %}">Início</a></li>
-                <li><a href="{% url 'lista_estudantes' %}">Estudantes</a></li>
-                <li><a href="{% url 'lista_professores' %}">Professores</a></li>
-                <li><a href="{% url 'lista_classes' %}">Classes</a></li>
-                <li><a href="{% url 'lista_aulas' %}">Aulas</a></li>
-            </ul>
-        </div>
-
-        <!-- Conteúdo principal -->
-        <div class="content">
-            <header>
-                <h1>Agenda de Aulas</h1>
-                <p>Gerencie o agendamento das aulas de forma prática.</p>
-            </header>
-
-            <!-- Visualização de Aulas -->
-            <section class="agenda">
-                <h2>Agenda de Aulas</h2>
-                <div class="agenda-grid">
-                    <div class="day-header">Segunda-feira</div>
-                    <div class="day-header">Terça-feira</div>
-                    <div class="day-header">Quarta-feira</div>
-                    <div class="day-header">Quinta-feira</div>
-                    <div class="day-header">Sexta-feira</div>
-
-                    <!-- Hora 08:00 -->
-                    <div class="time-slot" id="segunda-08">
-                        <input type="text" placeholder="Aula">
-                    </div>
-                    <div class="time-slot" id="terca-08">
-                        <input type="text" placeholder="Aula">
-                    </div>
-                    <div class="time-slot" id="quarta-08">
-                        <input type="text" placeholder="Aula">
-                    </div>
-                    <div class="time-slot" id="quinta-08">
-                        <input type="text" placeholder="Aula">
-                    </div>
-                    <div class="time-slot" id="sexta-08">
-                        <input type="text" placeholder="Aula">
-                    </div>
-
-                    <!-- Hora 09:00 -->
-                    <div class="time-slot" id="segunda-09">
-                        <input type="text" placeholder="Aula">
-                    </div>
-                    <div class="time-slot" id="terca-09">
-                        <input type="text" placeholder="Aula">
-                    </div>
-                    <div class="time-slot" id="quarta-09">
-                        <input type="text" placeholder="Aula">
-                    </div>
-                    <div class="time-slot" id="quinta-09">
-                        <input type="text" placeholder="Aula">
-                    </div>
-                    <div class="time-slot" id="sexta-09">
-                        <input type="text" placeholder="Aula">
-                    </div>
-                    
-                    <!-- Adicione mais horários conforme necessário -->
-                </div>
-            </section>
-
-            <!-- Formulário de Agendamento -->
-            <section class="form-section">
-                <h2>Adicionar Aula</h2>
-                <form action="#" method="post">
-                    <label for="dia">Dia da Semana:</label>
-                    <select id="dia" name="dia">
-                        <option value="segunda">Segunda-feira</option>
-                        <option value="terca">Terça-feira</option>
-                        <option value="quarta">Quarta-feira</option>
-                        <option value="quinta">Quinta-feira</option>
-                        <option value="sexta">Sexta-feira</option>
-                    </select>
-
-                    <label for="hora">Horário:</label>
-                    <input type="time" id="hora" name="hora" required>
-
-                    <label for="aula">Aula:</label>
-                    <input type="text" id="aula" name="aula" required>
-
-                    <label for="professor">Professor:</label>
-                    <input type="text" id="professor" name="professor" required>
-
-                    <button type="submit">Agendar Aula</button>
-                </form>
-            </section>
-        </div>
+  <div class="container">
+    <!-- Barra lateral -->
+    <div class="sidebar">
+      <h2>Menu</h2>
+      <ul>
+        <li><a href="{% url 'pagina_inicial' %}">Início</a></li>
+        <li><a href="{% url 'lista_estudantes' %}">Estudantes</a></li>
+        <li><a href="{% url 'lista_professores' %}">Professores</a></li>
+        <li><a href="{% url 'lista_classes' %}">Classes</a></li>
+        <li><a href="{% url 'lista_aulas' %}"class="active">Aulas</a></li>
+      </ul>
     </div>
+
+    <!-- Conteúdo principal -->
+    <div class="content">
+      <div class="schedule-container">
+        <table>
+          <thead>
+            <tr>
+            <th>Horário</th>
+            <th>Segunda</th>
+            <th>Terça</th>
+            <th>Quarta</th>
+            <th>Quinta</th>
+            <th>Sexta</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>08:00</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>09:00</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>10:00</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>11:00</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>12:00</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>13:00</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>14:00</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>15:00</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>16:00</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </body>
 </html>

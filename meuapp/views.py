@@ -1,5 +1,5 @@
 from .models import Estudante, Professor, Aula, Classe, Usuario, V_tela_estudante
-from .forms import EstudanteForm  # Supondo que você tenha um formulário para o estudante
+from .forms import EstudanteForm, ProfessorForm
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect
 from django.contrib import messages
@@ -23,9 +23,18 @@ def editar_estudante(request, id):
     return render(request, 'editar_estudante.html', {'form': form, 'estudante': estudantes})
 
 def editar_professor(request, id):
-    Professor = get_object_or_404(Professor, pk=id)
-    # Lógica para editar o professor
-    return render(request, 'editar_professor.html', {'professor': Professor})
+    professor = get_object_or_404(Professor, pk=id)
+
+    if request.method == 'POST':
+        form = ProfessorForm(request.POST, instance=professor)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Professor atualizado com sucesso!')
+            return redirect('lista_professores')  # Ajuste o redirecionamento conforme necessário
+    else:
+        form = ProfessorForm(instance=professor)
+
+    return render(request, 'editar_professor.html', {'form': form, 'professor': professor})
 
 def editar_classe(request, id):
     # Lógica para editar a classe
