@@ -1,45 +1,37 @@
 <!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Usuários</title>
-</head>
-<body>
-    <h1>Lista de Usuários</h1>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Editar Professor</title>
+    {% load static %}
 
-    <table border="1">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nome</th>
-                <th>Email</th>
-                <th>Telefone</th>
-                <th>Rua</th>
-                <th>Bairro</th>
-                <th>Cidade</th>
-                <th>Estado</th>
-                <th>CEP</th>
-                <th>Papel</th>
-                <th>Data de Criação</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for professor in professores %}
-            <tr>
-                <td>{{ professor.id }}</td>
-                <td>{{ professor.nome }}</td>
-                <td>{{ professor.email }}</td>
-                <td>{{ professor.telefone }}</td>
-                <td>{{ professor.rua }}</td>
-                <td>{{ professor.bairro }}</td>
-                <td>{{ professor.cidade }}</td>
-                <td>{{ professor.estado }}</td>
-                <td>{{ professor.cep }}</td>
-                <td>{{ professor.papel }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</body>
+    <link rel="stylesheet" href="{% static 'css/editar_professor.css' %}?v=1.0" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Barra lateral -->
+      <aside class="sidebar">
+        <h2>Menu</h2>
+        <ul>
+          <li><a href="{% url 'lista_professores' %}">Voltar para Professores</a></li>
+        </ul>
+      </aside>
+
+      <!-- Conteúdo principal -->
+      <main class="main-content">
+        <header class="main-header">
+          <h1>Editar Professor</h1>
+        </header>
+
+        <section class="form-container">
+          <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }} <!-- Renderiza os campos do formulário -->
+            <button type="submit" class="btn-salvar">Salvar Alterações</button>
+          </form>
+        </section>
+      </main>
+    </div>
+  </body>
 </html>

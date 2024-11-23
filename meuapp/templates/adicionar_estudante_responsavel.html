@@ -1,0 +1,23 @@
+<!-- adicionar_estudante_responsavel.html -->
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Adicionar Estudante e Responsável</title>
+</head>
+<body>
+    <h1>Adicionar Estudante e Responsável</h1>
+    
+    <h2>Cadastrar Estudante</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <h3>Formulário do Estudante</h3>
+        {{ estudante_form.as_p }}
+        
+        <h3>Formulário do Responsável</h3>
+        {{ responsavel_form.as_p }}
+        
+        <button type="submit">Salvar</button>
+    </form>
+</body>
+</html>

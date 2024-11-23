@@ -1,6 +1,5 @@
 from django.contrib import admin
-from .models import Estudante  # Certifique-se de que Estudante está definido corretamente no models.py
-
+from .models import Estudante
 # Customizando a exibição do modelo Estudante no Django Admin
 @admin.register(Estudante)
 class EstudanteAdmin(admin.ModelAdmin):

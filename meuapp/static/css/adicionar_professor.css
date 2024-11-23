@@ -1,0 +1,59 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 20%;
+    background-color: #333;
+    color: white;
+    padding: 20px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 10px 0;
+}
+
+.sidebar ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+.main-content {
+    width: 80%;
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+.formulario {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.formulario .form-control {
+    padding: 10px;
+    font-size: 16px;
+}
+
+.btn-salvar {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-salvar:hover {
+    background-color: #45a049;
+}

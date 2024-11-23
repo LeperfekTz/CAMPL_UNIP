@@ -1,7 +1,5 @@
 from django.db import models
 
-from django.db import models
-
 class Usuario(models.Model):
     id = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=255)
@@ -19,6 +17,7 @@ class Usuario(models.Model):
 
     def __str__(self):
         return self.nome
+
     
     class Meta:
         db_table = 'usuario'  # Nome da tabela no banco de dados
@@ -53,7 +52,6 @@ class Estudante(models.Model):
 class Professor(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, to_field='id', db_column='idusuario')
     dataCriacao = models.DateTimeField(auto_now_add=True)
-    telefone = models.CharField(max_length=15, blank=True, null=True)  # Adicionando o campo telefone
 
 
     def __str__(self):
@@ -77,13 +75,14 @@ class V_tela_estudante(models.Model):
 
 
 class Responsavel(models.Model):
-    nome = models.CharField(max_length=50)
-    telefone = models.CharField(max_length=30, unique=True)
-    dataCriacao = models.DateTimeField(auto_now_add=True)
-    idestudante = models.ForeignKey(Estudante, on_delete=models.CASCADE, related_name='responsavel')
+    idestudante = models.ForeignKey(
+        'Estudante',  # Refere-se ao modelo Estudante
+        on_delete=models.CASCADE,  # Comportamento em caso de exclusão
+        db_column='idestudante'  # Nome da coluna na tabela do banco de dados
+    )
+    nomeResp = models.CharField(max_length=50)
+    telefoneResp = models.CharField(max_length=30)
 
-    def __str__(self):
-        return self.nome
 
     class Meta:
         db_table = 'responsavel'  # Nome da tabela no banco de dados
@@ -121,5 +120,3 @@ class Aula(models.Model):
 
     class Meta:
         db_table = 'aula'  # Nome da tabela no banco de dados
-
-

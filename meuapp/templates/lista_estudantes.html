@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Estudantes</title>
-    <link rel="stylesheet" href="../static/css/lista_estudantes.css">
+    {% load static %}
+
+    <link rel="stylesheet" href="{% static 'css/lista_estudantes.css' %}?v=1.0">
 </head>
 <body>
     <div class="container">
@@ -24,8 +26,10 @@
         <main class="main-content">
             <header class="main-header">
                 <h1>Lista de Estudantes</h1>
-                <button class="btn-adicionar">
+                <button class="btn-adicionar" onclick="location.href='{% url 'adicionar_estudante_responsavel' %}'">
                     <img src="../static/icons/add.svg" alt="Adicionar" class="icon"> Adicionar Estudante
+                </button>
+
                 </button>
             </header>
             

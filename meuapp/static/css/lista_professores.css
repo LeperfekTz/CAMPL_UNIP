@@ -29,7 +29,12 @@ body {
     background-color: #1e293b;
     color: #fff;
     padding: 20px;
+    position: sticky;
+    top: 0; /* Define o limite superior para a posição fixa */
+    height: 100vh; /* Garante que a barra cubra toda a altura da tela */
+    overflow-y: auto; /* Permite rolagem interna caso o conteúdo ultrapasse a altura da tela */
 }
+
 
 .sidebar h2 {
     font-size: 1.5rem;
@@ -62,9 +67,14 @@ body {
 
 /* Conteúdo principal */
 .main-content {
+    display: flex;
+    flex-direction: column;
     flex-grow: 1;
     padding: 30px;
+    overflow-y: auto; /* Adiciona rolagem somente no eixo vertical */
+    scroll-behavior: smooth; /* Rola suavemente quando há navegação interna */
 }
+
 
 .main-header {
     display: flex;
@@ -169,3 +179,4 @@ table .btn-editar .icon {
         padding: 20px;
     }
 }
+

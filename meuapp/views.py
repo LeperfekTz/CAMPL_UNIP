@@ -1,8 +1,37 @@
 from .models import Estudante, Professor, Aula, Classe, Usuario, V_tela_estudante
-from .forms import EstudanteForm, ProfessorForm
-from django.shortcuts import render, get_object_or_404
+from .forms import EstudanteForm, ProfessorForm, ResponsavelForm
+from django.shortcuts import render, get_object_or_404, redirect
 from django.shortcuts import redirect
 from django.contrib import messages
+from django.db import transaction
+
+def adicionar_estudante_responsavel(request):
+    if request.method == 'POST':
+        estudante_form = EstudanteForm(request.POST)
+        responsavel_form = ResponsavelForm(request.POST)
+
+        # Valida os dois formulários
+        if estudante_form.is_valid() and responsavel_form.is_valid():
+            # Salva o estudante primeiro
+            estudante = estudante_form.save()
+
+            # Cria o responsável, associando o estudante
+            responsavel = responsavel_form.save(commit=False)
+            responsavel.idestudante = estudante  # Associa o estudante criado
+            responsavel.save()  # Agora salva o responsável
+
+            # Redireciona para a lista de responsáveis ou outra página
+            return redirect('lista_estudantes')
+
+    else:
+        estudante_form = EstudanteForm()
+        responsavel_form = ResponsavelForm()
+
+    return render(request, 'adicionar_estudante_responsavel.html', {
+        'estudante_form': estudante_form,
+        'responsavel_form': responsavel_form,
+    })
+
 
 
 def editar_estudante(request, id):
@@ -23,24 +52,29 @@ def editar_estudante(request, id):
     return render(request, 'editar_estudante.html', {'form': form, 'estudante': estudantes})
 
 def editar_professor(request, id):
+    # Obtém o professor pelo ID ou retorna 404 se não encontrado
     professor = get_object_or_404(Professor, pk=id)
 
+    # Se o método da requisição for POST, significa que o formulário foi enviado
     if request.method == 'POST':
         form = ProfessorForm(request.POST, instance=professor)
         if form.is_valid():
+            # Salva as alterações no professor
             form.save()
             messages.success(request, 'Professor atualizado com sucesso!')
-            return redirect('lista_professores')  # Ajuste o redirecionamento conforme necessário
+            return redirect('lista_professores')  # Redireciona para a lista de professores
     else:
+        # Caso contrário, cria o formulário com os dados atuais do professor
         form = ProfessorForm(instance=professor)
 
+    # Renderiza a página de edição com o formulário
     return render(request, 'editar_professor.html', {'form': form, 'professor': professor})
 
-def editar_classe(request, id):
+def editar_classe(request):
     # Lógica para editar a classe
     return render(request, 'editar_classe.html')
 
-def editar_aula(request, id):
+def editar_aula(request):
     # Lógica para editar a aula
     return render(request, 'editar_aula.html')
 
