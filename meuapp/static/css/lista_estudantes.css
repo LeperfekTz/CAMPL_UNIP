@@ -133,7 +133,7 @@ table tr:nth-child(even) {
 table .btn-editar {
     display: inline-flex;
     align-items: center;
-    color: #517dec;
+    color: #000000;
     text-decoration: none;
     font-size: 0.9rem;
     padding: 5px 10px;
@@ -142,8 +142,9 @@ table .btn-editar {
     border: 1px solid #ddd;
 }
 
+
 table .btn-editar:hover {
-    background-color: #00ff51;
+    background-color: #4caf50;
     color: #fff;
 }
 

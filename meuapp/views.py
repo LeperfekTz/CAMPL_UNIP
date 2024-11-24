@@ -3,7 +3,6 @@ from .forms import EstudanteForm, ProfessorForm, ResponsavelForm
 from django.shortcuts import render, get_object_or_404, redirect
 from django.shortcuts import redirect
 from django.contrib import messages
-from django.db import transaction
 
 def adicionar_estudante_responsavel(request):
     if request.method == 'POST':
@@ -32,6 +31,64 @@ def adicionar_estudante_responsavel(request):
         'responsavel_form': responsavel_form,
     })
 
+def adicionar_professor(request):
+    if request.method == 'POST':
+        form = ProfessorForm(request.POST)
+        if form.is_valid():
+            # Salva o usuário primeiro
+            usuario = form.save(commit=False)
+            usuario.papel = 'professor'  # Define o papel como 'professor'
+            
+            # Salva o usuário no banco para garantir que tenha um ID
+            usuario.save()
+
+            # Agora, cria o Professor e associa ao usuário
+            if Professor.objects.filter(usuario=usuario).exists():
+                messages.error(request, 'Este usuário já está associado a um professor.')
+                return redirect('adicionar_professor')  # Redireciona para a página de adição de professor
+
+            # Cria o novo Professor associado ao Usuario salvo
+            Professor.objects.create(usuario=usuario)
+            
+            messages.success(request, 'Professor adicionado com sucesso!')
+            return redirect('lista_professores')
+    else:
+        form = ProfessorForm()
+
+    return render(request, 'adicionar_professor.html', {'form': form})
+
+
+
+
+
+def excluir_professor(request, professor_id):
+    try:
+        # Buscando o professor com o id fornecido
+        professor = Professor.objects.get(id=professor_id)
+        
+        # Verificando se o professor está associado a alguma classe
+        aulas = professor.classes.all()
+
+        # Verificando se há aulas associadas ao professor
+        if aulas.exists():
+            # Se o professor estiver associado a aulas, podemos ou excluir as aulas ou tratá-las de outra forma
+            messages.error(request, 'Este professor está associado a aulas e não pode ser excluído.')
+            return redirect('lista_professores')
+
+        # Se não houver aulas associadas, podemos excluir o professor
+        professor.delete()
+        
+        messages.success(request, 'Professor excluído com sucesso!')
+        return redirect('lista_professores')
+
+    except Professor.DoesNotExist:
+        # Caso o professor não exista, exiba uma mensagem de erro
+        messages.error(request, 'Professor não encontrado.')
+        return redirect('lista_professores')
+
+
+
+
 
 
 def editar_estudante(request, id):
@@ -52,22 +109,19 @@ def editar_estudante(request, id):
     return render(request, 'editar_estudante.html', {'form': form, 'estudante': estudantes})
 
 def editar_professor(request, id):
-    # Obtém o professor pelo ID ou retorna 404 se não encontrado
+    # Obter o professor e o usuário relacionado
     professor = get_object_or_404(Professor, pk=id)
+    usuario = professor.usuario  # Obtemos o usuário associado ao professor
 
-    # Se o método da requisição for POST, significa que o formulário foi enviado
     if request.method == 'POST':
-        form = ProfessorForm(request.POST, instance=professor)
+        form = ProfessorForm(request.POST, instance=usuario)
         if form.is_valid():
-            # Salva as alterações no professor
             form.save()
             messages.success(request, 'Professor atualizado com sucesso!')
-            return redirect('lista_professores')  # Redireciona para a lista de professores
+            return redirect('lista_professores')
     else:
-        # Caso contrário, cria o formulário com os dados atuais do professor
-        form = ProfessorForm(instance=professor)
+        form = ProfessorForm(instance=usuario)
 
-    # Renderiza a página de edição com o formulário
     return render(request, 'editar_professor.html', {'form': form, 'professor': professor})
 
 def editar_classe(request):
@@ -100,11 +154,17 @@ def lista_aulas(request):
     return render(request, 'lista_aulas.html')
 
 def lista_professores(request):
-    professores = Usuario.objects.all()
+    professores = Professor.objects.select_related('usuario').all()
     return render(request, 'lista_professores.html', {'professores': professores})
+
 def lista_classes(request):
     return render(request, 'lista_classes.html')
 
 def estudantes_view(request):
     estudantes = Estudante.objects.all().select_related('responsavel')
     return render(request, 'estudantes.html', {'estudantes': estudantes})
+# Exemplo de como acessar as 'classes' de um professor
+def obter_classes_do_professor(professor_id):
+    professor = Professor.objects.get(id=professor_id)
+    classes_do_professor = professor.classes.all()  # Usando o related_name
+    return classes_do_professor

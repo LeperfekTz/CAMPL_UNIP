@@ -15,4 +15,5 @@ class ResponsavelForm(forms.ModelForm):
 class ProfessorForm(forms.ModelForm):
     class Meta:
         model = Usuario
-        fields = ['nome', 'email', 'telefone']  # Certifique-se de que 'telefone' está listado aqui
+        fields = ['nome', 'email', 'telefone', 'rua', 'bairro', 'cidade', 'estado', 'cep']
+

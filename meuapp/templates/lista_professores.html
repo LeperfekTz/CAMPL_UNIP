@@ -15,7 +15,7 @@
             <ul>
                 <li><a href="{% url 'pagina_inicial' %}">Início</a></li>
                 <li><a href="{% url 'lista_estudantes' %}">Estudantes</a></li>
-                <li><a href="{% url 'lista_professores' %}"class="active">Professores</a></li>
+                <li><a href="{% url 'lista_professores' %}" class="active">Professores</a></li>
                 <li><a href="{% url 'lista_classes' %}">Classes</a></li>
                 <li><a href="{% url 'lista_aulas' %}">Aulas</a></li>
             </ul>
@@ -25,7 +25,7 @@
         <main class="main-content">
             <header class="main-header">
                 <h1>Lista de Professores</h1>
-                <button class="btn-adicionar">
+                <button class="btn-adicionar" onclick="location.href='{% url 'adicionar_professor' %}'">
                     <img src="../static/icons/add.svg" alt="Adicionar" class="icon"> Adicionar Professor
                 </button>
             </header>
@@ -35,7 +35,7 @@
                     <thead>
                         <tr>
                             <th>Nome</th>
-                            <th>Email</th>
+                            <th>E-mail</th>
                             <th>Telefone</th>
                             <th>Ação</th>
                         </tr>
@@ -43,13 +43,21 @@
                     <tbody>
                         {% for professor in professores %}
                         <tr>
-                            <td>{{ professor.nome }}</td>
-                            <td>{{ professor.email }}</td>
-                            <td>{{ professor.telefone }}</td>
+                            <td>{{ professor.usuario.nome }}</td>
+                            <td>{{ professor.usuario.email }}</td>
+                            <td>{{ professor.usuario.telefone }}</td>
                             <td>
                                 <a href="{% url 'editar_professor' professor.id %}" class="btn-editar">
                                     <img src="../static/icons/editar.svg" alt="Editar" class="icon"> Editar
                                 </a>
+                                
+                                <!-- Formulário de exclusão -->
+                                <form action="{% url 'excluir_professor' professor.id %}" method="post" style="display:inline;" onsubmit="return confirm('Tem certeza de que deseja excluir este professor?')">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn-excluir">
+                                        <img src="../static/icons/excluir.svg" alt="Excluir" class="icon"> Excluir
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                         {% empty %}

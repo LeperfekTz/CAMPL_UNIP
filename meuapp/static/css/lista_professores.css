@@ -7,20 +7,20 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    height: 100vh;
-    background-color: #f4f4f4;
+    background-color: #f4f5f7;
+    color: #333;
 }
 
+/* Efeito ao focar no campo de Nome */
+input[type="text"]:focus {
+    border-color: #4caf50;
+    outline: none;
+}
 
 /* Estrutura geral */
 .container {
     display: flex;
-    width: 100%;
-    height: 100%;
+    min-height: 100vh;
 }
 
 /* Barra lateral */
@@ -30,11 +30,10 @@ body {
     color: #fff;
     padding: 20px;
     position: sticky;
-    top: 0; /* Define o limite superior para a posição fixa */
-    height: 100vh; /* Garante que a barra cubra toda a altura da tela */
-    overflow-y: auto; /* Permite rolagem interna caso o conteúdo ultrapasse a altura da tela */
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
 }
-
 
 .sidebar h2 {
     font-size: 1.5rem;
@@ -67,14 +66,10 @@ body {
 
 /* Conteúdo principal */
 .main-content {
-    display: flex;
-    flex-direction: column;
     flex-grow: 1;
     padding: 30px;
-    overflow-y: auto; /* Adiciona rolagem somente no eixo vertical */
-    scroll-behavior: smooth; /* Rola suavemente quando há navegação interna */
+    overflow-y: auto;
 }
-
 
 .main-header {
     display: flex;
@@ -121,8 +116,9 @@ body {
 
 table {
     width: 100%;
-    border-collapse: collapse;
-    min-width: 600px;
+    border-collapse: separate; /* Use 'separate' para aplicar o 'border-spacing' */
+    border-spacing: 0;
+    table-layout: auto; /* Deixa a tabela ajustar a largura das colunas automaticamente */
 }
 
 table thead {
@@ -133,18 +129,23 @@ table thead {
 table th,
 table td {
     padding: 15px;
-    text-align: left;
     border-bottom: 1px solid #ddd;
+    text-align: left;
+    word-wrap: break-word;
+    min-width: auto; /* Define uma largura mínima para as células */
 }
 
-table tr:nth-child(even) {
-    background-color: #f9f9f9;
+/* Cabeçalho */
+table th {
+    background-color: #4caf50;
+    color: white;
 }
 
+/* Botão de editar */
 table .btn-editar {
     display: inline-flex;
     align-items: center;
-    color: #517dec;
+    color: #000000;
     text-decoration: none;
     font-size: 0.9rem;
     padding: 5px 10px;
@@ -154,7 +155,7 @@ table .btn-editar {
 }
 
 table .btn-editar:hover {
-    background-color: #41d46f;
+    background-color: #4caf50;
     color: #fff;
 }
 
@@ -164,6 +165,28 @@ table .btn-editar .icon {
     margin-right: 5px;
 }
 
+.btn-excluir {
+    display: inline-flex;
+    align-items: center;
+    color: #000000;
+    text-decoration: none;
+    font-size: 0.9rem;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+
+.btn-excluir:hover {
+    background-color: #af4c4c;
+    color: #fff;
+}
+
+.btn-excluir .icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+}
 
 /* Responsividade */
 @media (max-width: 768px) {
@@ -173,10 +196,20 @@ table .btn-editar .icon {
 
     .sidebar {
         width: 100%;
+        position: relative;
+        height: auto;
     }
 
     .main-content {
-        padding: 20px;
+        padding: 10px;
+    }
+
+    table {
+        width: 100%;
+    }
+
+    table th,
+    table td {
+        min-width: auto; /* Permite que a largura das células seja ajustada com base no conteúdo */
     }
 }
-
