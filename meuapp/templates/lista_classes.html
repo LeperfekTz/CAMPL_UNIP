@@ -18,41 +18,6 @@
         <li><a href="{% url 'lista_professores' %}">Professores</a></li>
         <li><a href="{% url 'lista_classes' %}" class="active">Classes</a></li>
         <li><a href="{% url 'lista_aulas' %}">Aulas</a></li>
-      </ul>
-    </div>
-
-    <!-- Conteúdo principal -->
-    <div class="content">
-      <h1>Lista de Classes</h1>
-      <div class="schedule-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Classe</th>
-              <th>Segunda</th>
-              <th>Terça</th>
-              <th>Quarta</th>
-              <th>Quinta</th>
-              <th>Sexta</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for classe in classes %}
-              <tr>
-                <td>{{ classe.classe }}</td>  <!-- Nome da classe -->
-                <td>{{ classe. }}</td>  <!-- Segunda-feira -->
-
-              </tr>
-            {% empty %}
-              <tr>
-                <td colspan="6">Nenhuma classe cadastrada.</td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-      <a href="{% url 'adicionar_classe' %}" class="btn btn-primary">Adicionar Classe</a>
-    </div>
   </div>
 </body>
 </html>

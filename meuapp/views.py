@@ -58,11 +58,9 @@ def adicionar_professor(request):
     return render(request, 'adicionar_professor.html', {'form': form})
 
 def excluir_estudante(request, estudante_id):
-    if request.method == 'POST':
-        estudante = get_object_or_404(Estudante, id=estudante_id)
-        estudante.delete()
-        messages.success(request, f"Estudante {estudante.nome} excluído com sucesso!")
-        return redirect('lista_estudantes')  # Substitua pelo nome correto da URL
+    estudante = get_object_or_404(Estudante, id=estudante_id)
+    estudante.delete()
+    messages.success(request, f"Estudante {estudante.nome} excluído com sucesso!")
     return redirect('lista_estudantes')
 
 def excluir_professor(request, professor_id):

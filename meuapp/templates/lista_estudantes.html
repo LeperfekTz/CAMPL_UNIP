@@ -57,7 +57,7 @@
                                 <a href="{% url 'editar_estudante' estudante.id %}" class="btn-editar">
                                     <img src="../static/icons/editar.svg" alt="Editar" class="icon"> Editar
                                 </a>
-                                <form action="{% url 'excluir_estudante' estudante.id %}" method="post" style="display:inline;" onsubmit="return confirm('Tem certeza de que deseja excluir este professor?')">
+                                <form action="{% url 'excluir_estudante' estudante_id=estudante.id %}" method="post" style="display:inline;" onsubmit="return confirm('Tem certeza de que deseja excluir este estudante?')">
                                     {% csrf_token %}
                                     <button type="submit" class="btn-excluir">
                                         <img src="../static/icons/excluir.svg" alt="Excluir" class="icon"> Excluir
