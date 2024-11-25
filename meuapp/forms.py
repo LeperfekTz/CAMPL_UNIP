@@ -1,5 +1,5 @@
 from django import forms
-from .models import Estudante, Usuario, Responsavel
+from .models import Estudante, Usuario, Responsavel, Classe
 
 class EstudanteForm(forms.ModelForm):
     class Meta:
@@ -11,6 +11,10 @@ class ResponsavelForm(forms.ModelForm):
         model = Responsavel
         fields = ['nomeResp', 'telefoneResp']
         
+class ClasseForm(forms.ModelForm):
+    class Meta:
+        model = Classe
+        fields = ['classe']  # Campos do modelo que serão exibidos no formulário
 
 class ProfessorForm(forms.ModelForm):
     class Meta:

@@ -154,6 +154,30 @@ table .btn-editar .icon {
     margin-right: 5px;
 }
 
+.btn-excluir {
+    display: inline-flex;
+    align-items: center;
+    color: #000000;
+    text-decoration: none;
+    font-size: 0.9rem;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+
+.btn-excluir:hover {
+    background-color: #af4c4c;
+    color: #fff;
+}
+
+.btn-excluir .icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+}
+
+
 /* Responsividade */
 @media (max-width: 768px) {
     .container {

@@ -59,17 +59,17 @@ class Estudante(models.Model):
 class Professor(models.Model):
     usuario = models.OneToOneField(
         Usuario,
-        on_delete=models.CASCADE,
-        db_column='idusuario',
-        related_name='professor'
+        on_delete=models.CASCADE,  # Exclui o usuário quando o professor for excluído
+        db_column='idusuario',     # Nome da coluna no banco de dados
+        related_name='professor',  # Permite acessar o professor diretamente pelo usuario.professor
     )
-    dataCriacao = models.DateTimeField(auto_now_add=True)
+    dataCriacao = models.DateTimeField(auto_now_add=True)  # Registra automaticamente a data de criação
 
     class Meta:
-        db_table = 'professor'
+        db_table = 'professor'  # Nome da tabela no banco de dados
 
     def __str__(self):
-        return f"Professor: {self.usuario.nome}"
+        return f"Professor: {self.usuario.nome}"  # Exibe o nome do professor
 
 class V_tela_estudante(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -123,10 +123,16 @@ class Aula(models.Model):
 
 class Classe(models.Model):
     classe = models.CharField(max_length=10, null=True, blank=True)
-    estudante = models.ForeignKey(Estudante, on_delete=models.CASCADE)
+    estudante = models.ForeignKey(Estudante, on_delete=models.SET_NULL, null=True, db_column='idestudante')
     professor = models.ForeignKey(Professor, on_delete=models.CASCADE, db_column='idprofessor', related_name='classes')
     aula = models.ForeignKey(Aula, on_delete=models.CASCADE, db_column='idaula', related_name='classes')
+    idestudante = models.ManyToManyField(Estudante, related_name='classes', blank=True)
     dataCriacao = models.DateTimeField(auto_now_add=True)
+    # segunda = models.CharField(max_length=50, null=True, blank=True)
+    # terca = models.CharField(max_length=50, null=True, blank=True)
+    # quarta = models.CharField(max_length=50, null=True, blank=True)
+    # quinta = models.CharField(max_length=50, null=True, blank=True)
+    # sexta = models.CharField(max_length=50, null=True, blank=True)
 
     def __str__(self):
         return f"{self.classe} - {self.estudante.nome}"
