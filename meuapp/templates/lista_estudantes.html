@@ -17,7 +17,7 @@
                 <li><a href="{% url 'pagina_inicial' %}">Início</a></li>
                 <li><a href="{% url 'lista_estudantes' %}"class="active">Estudantes</a></li>
                 <li><a href="{% url 'lista_professores' %}">Professores</a></li>
-                <li><a href="{% url 'lista_presenca' %}">Classes</a></li>
+                <li><a href="{% url 'lista_classes' %}">Classes</a></li>
                 <li><a href="{% url 'lista_aulas' %}">Aulas</a></li>
             </ul>
         </aside>
@@ -57,7 +57,7 @@
                                 <a href="{% url 'editar_estudante' estudante.id %}" class="btn-editar">
                                     <img src="../static/icons/editar.svg" alt="Editar" class="icon"> Editar
                                 </a>
-                                <form action="{% url 'excluir_estudante' estudante_id=estudante.id %}" method="post" style="display:inline;" onsubmit="return confirm('Tem certeza de que deseja excluir este estudante?')">
+                                <form action="{% url 'excluir_estudante' estudante.id %}" method="post" style="display:inline;" onsubmit="return confirm('Tem certeza de que deseja excluir este professor?')">
                                     {% csrf_token %}
                                     <button type="submit" class="btn-excluir">
                                         <img src="../static/icons/excluir.svg" alt="Excluir" class="icon"> Excluir

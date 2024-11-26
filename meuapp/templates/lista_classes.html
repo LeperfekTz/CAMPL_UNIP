@@ -1,92 +1,58 @@
-<!-- lista_presenca.html -->
-{% load static %}
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Presença</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>App Escola</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/lista_classes.css' %}" />
 </head>
-<body class="bg-gray-100">
+<body>
+  <div class="container">
+    <!-- Barra lateral -->
+    <div class="sidebar">
+      <h2>Menu</h2>
+      <ul>
+        <li><a href="{% url 'pagina_inicial' %}">Início</a></li>
+        <li><a href="{% url 'lista_estudantes' %}">Estudantes</a></li>
+        <li><a href="{% url 'lista_professores' %}">Professores</a></li>
+        <li><a href="{% url 'lista_classes' %}" class="active">Classes</a></li>
+        <li><a href="{% url 'lista_aulas' %}">Aulas</a></li>
+      </ul>
+    </div>
 
-<div class="container mx-auto p-6">
-    <div class="rounded-md border bg-white shadow-md">
-        <table class="min-w-full text-sm text-left text-gray-500">
-            <thead class="bg-gray-200">
-                <tr>
-                    <th class="p-4">Presença</th>
-                    <th class="p-4">Nome</th>
-                    <th class="p-4">Email</th>
-                </tr>
-            </thead>
-            <tbody id="student-table-body">
-                {% for student in students %}
-                <tr data-id="{{ student.id }}">
-                    <td class="p-4">
-                        <input type="checkbox" class="attendance-checkbox" data-id="{{ student.id }}">
-                    </td>
-                    <td class="p-4">{{ student.nome }}</td>
-                    <td class="p-4">{{ student.email }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
+    <!-- Conteúdo principal -->
+    <div class="content">
+      <h1>Lista de Classes</h1>
+      <div class="schedule-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Classe</th>
+              <th>Segunda</th>
+              <th>Terça</th>
+              <th>Quarta</th>
+              <th>Quinta</th>
+              <th>Sexta</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for classe in classes %}
+              <tr>
+                <td>{{ classe.classe }}</td>  <!-- Nome da classe -->
+                <td>{{ classe. }}</td>  <!-- Segunda-feira -->
+
+              </tr>
+            {% empty %}
+              <tr>
+                <td colspan="6">Nenhuma classe cadastrada.</td>
+              </tr>
+            {% endfor %}
+          </tbody>
         </table>
+      </div>
+      <a href="{% url 'adicionar_classe' %}" class="btn btn-primary">Adicionar Classe</a>
     </div>
-
-    <div class="flex justify-between items-center p-4 mt-4 bg-gray-50 rounded-md">
-        <div class="space-x-4">
-            <span id="present-count" class="text-sm font-medium">Presentes: 0</span>
-            <span id="absent-count" class="text-sm font-medium">Ausentes: {{ students|length }}</span>
-        </div>
-        <button id="save-attendance" class="px-4 py-2 bg-blue-500 text-white rounded-md">
-            Salvar Presença
-        </button>
-    </div>
-</div>
-
-<script>
-    const attendance = {};  // Para armazenar o estado de presença dos estudantes
-
-    // Atualizar contagem de presentes e ausentes
-    function updateCounts() {
-        const presentCount = Object.values(attendance).filter(Boolean).length;
-        const absentCount = {{ students|length }} - presentCount;
-
-        document.getElementById('present-count').textContent = `Presentes: ${presentCount}`;
-        document.getElementById('absent-count').textContent = `Ausentes: ${absentCount}`;
-    }
-
-    // Quando o checkbox for alterado
-    document.querySelectorAll('.attendance-checkbox').forEach(checkbox => {
-        checkbox.addEventListener('change', (e) => {
-            const studentId = e.target.getAttribute('data-id');
-            attendance[studentId] = e.target.checked;
-            updateCounts();
-        });
-    });
-
-    // Quando o botão de salvar for clicado
-    document.getElementById('save-attendance').addEventListener('click', () => {
-        const presentStudents = Object.keys(attendance).filter(id => attendance[id]);
-
-        fetch("{% url 'salvar_presenca' %}", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': '{{ csrf_token }}'
-            },
-            body: JSON.stringify({ presentes: presentStudents })
-        })
-        .then(response => response.json())
-        .then(data => {
-            alert(data.message);  // Exibir mensagem de sucesso
-        })
-        .catch(error => {
-            console.error('Erro ao salvar presença:', error);
-        });
-    });
-</script>
-
+  </div>
 </body>
 </html>

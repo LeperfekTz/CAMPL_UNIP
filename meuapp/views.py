@@ -58,9 +58,11 @@ def adicionar_professor(request):
     return render(request, 'adicionar_professor.html', {'form': form})
 
 def excluir_estudante(request, estudante_id):
-    estudante = get_object_or_404(Estudante, id=estudante_id)
-    estudante.delete()
-    messages.success(request, f"Estudante {estudante.nome} excluído com sucesso!")
+    if request.method == 'POST':
+        estudante = get_object_or_404(Estudante, id=estudante_id)
+        estudante.delete()
+        messages.success(request, f"Estudante {estudante.nome} excluído com sucesso!")
+        return redirect('lista_estudantes')  # Substitua pelo nome correto da URL
     return redirect('lista_estudantes')
 
 def excluir_professor(request, professor_id):
@@ -132,7 +134,7 @@ def adicionar_classe(request):
         if form.is_valid():
             # Salva a nova classe no banco de dados
             form.save()
-            return redirect('lista_presenca')  # Redireciona para a lista de classes
+            return redirect('lista_classes')  # Redireciona para a lista de classes
     else:
         form = ClasseForm()
 
@@ -146,7 +148,7 @@ def adicionar_alunos_na_classe(request, classe_id):
         alunos_selecionados = request.POST.getlist('alunos')  # Obtém os alunos selecionados
         classe.idestudante.set(alunos_selecionados)  # Atribui os alunos à classe
         classe.save()  # Salva a atualização da classe
-        return redirect('lista_presenca')  # Redireciona para a lista de classes
+        return redirect('lista_classes')  # Redireciona para a lista de classes
 
     return render(request, 'adicionar_alunos_na_classe.html', {'classe': classe, 'estudantes': estudantes})
 
@@ -179,25 +181,10 @@ def lista_professores(request):
     professores = Professor.objects.select_related('usuario').all()
     return render(request, 'lista_professores.html', {'professores': professores})
 
-
-
-def lista_presenca(request):
-    if request.method == 'GET':
-        estudantes = Estudante.objects.all()
-        data = [{"id": e.id, "nome": e.nome, "email": e.email} for e in estudantes]
-        return render(request, 'lista_classes.html', {'students': data})
-
-def salvar_presenca(request):
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        presentes = data.get('presentes', [])
-        # Aqui, você pode salvar as presenças no banco de dados
-        for estudante_id in presentes:
-            estudante = Estudante.objects.get(id=estudante_id)
-            # Salve a presença no banco ou faça o que precisar com a informação
-            # Exemplo: estudante.presente = True
-            estudante.save()
-        return JsonResponse({"message": "Presença salva com sucesso!"}, status=200)
+def lista_classes(request):
+    # Obtém todas as classes do banco de dados
+    classes = Classe.objects.all()  # Obtém todas as classes
+    return render(request, 'lista_classes.html', {'classes': classes}) 
 
 def estudantes_view(request):
     estudantes = Estudante.objects.all().select_related('responsavel')

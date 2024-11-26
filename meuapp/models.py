@@ -139,6 +139,3 @@ class Classe(models.Model):
 
     class Meta:
         db_table = 'classe'  # Nome da tabela no banco de dados
-
-
-

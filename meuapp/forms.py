@@ -1,3 +1,4 @@
+
 from django import forms
 from .models import Estudante, Usuario, Responsavel, Classe
 
@@ -20,4 +21,3 @@ class ProfessorForm(forms.ModelForm):
     class Meta:
         model = Usuario
         fields = ['nome', 'email', 'telefone', 'rua', 'bairro', 'cidade', 'estado', 'cep']
-
