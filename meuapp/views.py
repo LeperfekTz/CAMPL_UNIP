@@ -1,4 +1,5 @@
-from .models import Estudante, Professor, Aula, Classe, Usuario, V_tela_estudante, EstudanteClasse, Presenca
+
+from .models import Estudante, Professor, Aula, Classe, Usuario, V_tela_estudante, v_tela_classeEstudante, Presenca
 from .forms import EstudanteForm, ProfessorForm, ResponsavelForm, ClasseForm
 from django.shortcuts import render, get_object_or_404, redirect
 from django.shortcuts import redirect
@@ -184,32 +185,25 @@ def lista_professores(request):
     return render(request, 'lista_professores.html', {'professores': professores})
 
 
-# View corrigida para passar as classes e não os estudantes
+# View corrigida para passar as classes e n o os estudantes
+
 def lista_classes(request):
-    # Receber o `idclasse` via POST ou GET
-    id_classe = request.POST.get('idclasse', None)
-
+    # Recupera todas as classes disponíveis (caso haja uma tabela ou campo específico para isso)
+    classes = v_tela_classeEstudante.objects.values('id').distinct()  # Supondo que 'idclasse' seja o campo da classe
+    
+    # Filtra os estudantes pela classe selecionada, se houver
+    id_classe = request.POST.get('id')  # Obtém a classe do formulário
     if id_classe:
-        estudantes = EstudanteClasse.objects.filter(idclasse=id_classe)
+        estudantes = v_tela_classeEstudante.objects.filter(id=id_classe)
     else:
-        estudantes = EstudanteClasse.objects.all()
+        estudantes = v_tela_classeEstudante.objects.all()  # Caso contrário, retorna todos os estudantes
 
-    return render(request, 'lista_classes.html', {'estudantes': estudantes})
+    return render(request, 'lista_classes.html', {'estudantes': estudantes, 'classes': classes})
 
 def buscar_alunos_por_classe(request):
-    id_classe = request.GET.get('idclasse')
-    alunos = EstudanteClasse.objects.filter(idclasse=id_classe).values(
-        'id', 'nome', 'email', 'telefone', 'idclasse__nome'
+    id_classe = request.GET.get('id')
+    alunos = v_tela_classeEstudante.objects.filter(id=id_classe).values(
+        'id', 'nome', 'email', 'telefone'
     )
     return JsonResponse(list(alunos), safe=False)
-
-
-
-
-def estudantes_view(request):
-    estudantes = Estudante.objects.all().select_related('responsavel')
-    return render(request, 'estudantes.html', {'estudantes': estudantes})
-
-
-
 

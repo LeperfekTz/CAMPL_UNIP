@@ -1,3 +1,4 @@
+
 from django.db import models
 
 
@@ -50,7 +51,7 @@ class Estudante(models.Model):
     estado = models.CharField(max_length=2)
     cep = models.CharField(max_length=20)
     dataCriacao = models.DateTimeField(auto_now_add=True)
-    classe = models.ManyToManyField('Classe', related_name='estudantes', blank=True)
+    idclasse = models.ManyToManyField('Classe', related_name='estudantes', blank=True)
 
     def __str__(self):
         
@@ -86,7 +87,7 @@ class V_tela_estudante(models.Model):
         managed = False  # Não deixe o Django gerenciar esta tabela
         db_table = 'V_tela_estudante'  # Nome da sua view ou tabela
 
-class EstudanteClasse(models.Model):
+class v_tela_classeEstudante(models.Model):
     id = models.IntegerField(primary_key=True)
     nome = models.CharField(max_length=255)
     email = models.EmailField()
@@ -94,7 +95,7 @@ class EstudanteClasse(models.Model):
 
     class Meta:
         managed = False  # Indica que essa tabela/visão é apenas leitura
-        db_table = 'v_tela_classeestudante'  # Nome da sua view no banco
+        db_table = 'v_tela_classeEstudante'  # Nome da sua view no banco
 
 class Responsavel(models.Model):
     idestudante = models.ForeignKey(
@@ -148,7 +149,7 @@ class Classe(models.Model):
 
 class Presenca(models.Model):
     estudante = models.OneToOneField(
-        EstudanteClasse,  # Relaciona com a view VTelaClasseEstudante
+        v_tela_classeEstudante,  # Relaciona com a view VTelaClasseEstudante
         on_delete=models.CASCADE,  # O que acontece se o estudante for excluído
         primary_key=True,  # Define estudante como a chave primária
     )

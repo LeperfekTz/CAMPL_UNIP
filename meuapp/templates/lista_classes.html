@@ -10,7 +10,12 @@
     <form method="POST" action="/lista_classes/">
         {% csrf_token %}
         <label for="idclasse">Classe:</label>
-        <input type="number" name="idclasse" id="idclasse" placeholder="ID da Classe">
+        <select name="idclasse" id="idclasse">
+            <option value="">Todas as Classes</option>
+            {% for classe in classes %}
+                <option value="{{ classe.idclasse }}">{{ classe.idclasse }}</option>
+            {% endfor %}
+        </select>
         <button type="submit">Filtrar</button>
     </form>
 
@@ -21,16 +26,15 @@
                 <th>Nome</th>
                 <th>Email</th>
                 <th>Cpf</th>
-                <th>Nome da Classe</th>
             </tr>
         </thead>
         <tbody>
             {% for estudante in estudantes %}
                 <tr>
-                    <td>{{ estudante.id }}</td>
+                    <td>{{ estudante.id}}</td>
                     <td>{{ estudante.nome }}</td>
                     <td>{{ estudante.email }}</td>
-                    <td>{{ estudante.cpf}}
+                    <td>{{ estudante.cpf }}</td>
                 </tr>
             {% endfor %}
         </tbody>
