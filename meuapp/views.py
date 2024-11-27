@@ -1,8 +1,10 @@
-from .models import Estudante, Professor, Aula, Classe, Usuario, V_tela_estudante
+from .models import Estudante, Professor, Aula, Classe, Usuario, V_tela_estudante, EstudanteClasse, Presenca
 from .forms import EstudanteForm, ProfessorForm, ResponsavelForm, ClasseForm
 from django.shortcuts import render, get_object_or_404, redirect
 from django.shortcuts import redirect
 from django.contrib import messages
+from django.http import JsonResponse
+
 
 def adicionar_estudante_responsavel(request):
     if request.method == 'POST':
@@ -140,17 +142,17 @@ def adicionar_classe(request):
 
     return render(request, 'adicionar_classe.html', {'form': form})
 
-def adicionar_alunos_na_classe(request, classe_id):
+def adicionar_estudante_na_classe(request, classe_id):
     classe = get_object_or_404(Classe, id=classe_id)  # Obtém a classe
     estudantes = Estudante.objects.all()  # Obtém todos os estudantes cadastrados
 
     if request.method == "POST":
-        alunos_selecionados = request.POST.getlist('alunos')  # Obtém os alunos selecionados
-        classe.idestudante.set(alunos_selecionados)  # Atribui os alunos à classe
+        estudante_selecionados = request.POST.getlist('estudante')  # Obtém os estudante selecionados
+        classe.idestudante.set(estudante_selecionados)  # Atribui os estudante à classe
         classe.save()  # Salva a atualização da classe
         return redirect('lista_classes')  # Redireciona para a lista de classes
 
-    return render(request, 'adicionar_alunos_na_classe.html', {'classe': classe, 'estudantes': estudantes})
+    return render(request, 'adicionar_estudante_na_classe.html', {'classe': classe, 'estudantes': estudantes})
 
 def editar_aula(request):
     # Lógica para editar a aula
@@ -181,16 +183,33 @@ def lista_professores(request):
     professores = Professor.objects.select_related('usuario').all()
     return render(request, 'lista_professores.html', {'professores': professores})
 
+
+# View corrigida para passar as classes e não os estudantes
 def lista_classes(request):
-    # Obtém todas as classes do banco de dados
-    classes = Classe.objects.all()  # Obtém todas as classes
-    return render(request, 'lista_classes.html', {'classes': classes}) 
+    # Receber o `idclasse` via POST ou GET
+    id_classe = request.POST.get('idclasse', None)
+
+    if id_classe:
+        estudantes = EstudanteClasse.objects.filter(idclasse=id_classe)
+    else:
+        estudantes = EstudanteClasse.objects.all()
+
+    return render(request, 'lista_classes.html', {'estudantes': estudantes})
+
+def buscar_alunos_por_classe(request):
+    id_classe = request.GET.get('idclasse')
+    alunos = EstudanteClasse.objects.filter(idclasse=id_classe).values(
+        'id', 'nome', 'email', 'telefone', 'idclasse__nome'
+    )
+    return JsonResponse(list(alunos), safe=False)
+
+
+
 
 def estudantes_view(request):
     estudantes = Estudante.objects.all().select_related('responsavel')
     return render(request, 'estudantes.html', {'estudantes': estudantes})
-# Exemplo de como acessar as 'classes' de um professor
-def obter_classes_do_professor(professor_id):
-    professor = Professor.objects.get(id=professor_id)
-    classes_do_professor = professor.classes.all()  # Usando o related_name
-    return classes_do_professor
+
+
+
+

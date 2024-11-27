@@ -1,58 +1,39 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>App Escola</title>
-  {% load static %}
-  <link rel="stylesheet" href="{% static 'css/lista_classes.css' %}" />
+    <meta charset="UTF-8">
+    <title>Lista de Estudantes</title>
 </head>
 <body>
-  <div class="container">
-    <!-- Barra lateral -->
-    <div class="sidebar">
-      <h2>Menu</h2>
-      <ul>
-        <li><a href="{% url 'pagina_inicial' %}">Início</a></li>
-        <li><a href="{% url 'lista_estudantes' %}">Estudantes</a></li>
-        <li><a href="{% url 'lista_professores' %}">Professores</a></li>
-        <li><a href="{% url 'lista_classes' %}" class="active">Classes</a></li>
-        <li><a href="{% url 'lista_aulas' %}">Aulas</a></li>
-      </ul>
-    </div>
+    <h1>Estudantes</h1>
 
-    <!-- Conteúdo principal -->
-    <div class="content">
-      <h1>Lista de Classes</h1>
-      <div class="schedule-container">
-        <table>
-          <thead>
+    <form method="POST" action="/lista_classes/">
+        {% csrf_token %}
+        <label for="idclasse">Classe:</label>
+        <input type="number" name="idclasse" id="idclasse" placeholder="ID da Classe">
+        <button type="submit">Filtrar</button>
+    </form>
+
+    <table border="1">
+        <thead>
             <tr>
-              <th>Classe</th>
-              <th>Segunda</th>
-              <th>Terça</th>
-              <th>Quarta</th>
-              <th>Quinta</th>
-              <th>Sexta</th>
+                <th>ID_Classe</th>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Cpf</th>
+                <th>Nome da Classe</th>
             </tr>
-          </thead>
-          <tbody>
-            {% for classe in classes %}
-              <tr>
-                <td>{{ classe.classe }}</td>  <!-- Nome da classe -->
-                <td>{{ classe. }}</td>  <!-- Segunda-feira -->
-
-              </tr>
-            {% empty %}
-              <tr>
-                <td colspan="6">Nenhuma classe cadastrada.</td>
-              </tr>
+        </thead>
+        <tbody>
+            {% for estudante in estudantes %}
+                <tr>
+                    <td>{{ estudante.id }}</td>
+                    <td>{{ estudante.nome }}</td>
+                    <td>{{ estudante.email }}</td>
+                    <td>{{ estudante.cpf}}
+                </tr>
             {% endfor %}
-          </tbody>
-        </table>
-      </div>
-      <a href="{% url 'adicionar_classe' %}" class="btn btn-primary">Adicionar Classe</a>
-    </div>
-  </div>
+        </tbody>
+    </table>
 </body>
 </html>

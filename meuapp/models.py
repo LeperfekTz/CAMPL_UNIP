@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Usuario(models.Model):
     nome = models.CharField(max_length=50)
     email = models.EmailField(max_length=50, unique=True)
@@ -11,6 +12,7 @@ class Usuario(models.Model):
     cidade = models.CharField(max_length=50)
     estado = models.CharField(max_length=2)
     cep = models.CharField(max_length=20)
+    idclasse = models.ManyToManyField('Classe', related_name='professores', blank=True)
     papel = models.CharField(
         max_length=20,
         choices=[
@@ -48,6 +50,7 @@ class Estudante(models.Model):
     estado = models.CharField(max_length=2)
     cep = models.CharField(max_length=20)
     dataCriacao = models.DateTimeField(auto_now_add=True)
+    classe = models.ManyToManyField('Classe', related_name='estudantes', blank=True)
 
     def __str__(self):
         
@@ -83,7 +86,15 @@ class V_tela_estudante(models.Model):
         managed = False  # Não deixe o Django gerenciar esta tabela
         db_table = 'V_tela_estudante'  # Nome da sua view ou tabela
 
+class EstudanteClasse(models.Model):
+    id = models.IntegerField(primary_key=True)
+    nome = models.CharField(max_length=255)
+    email = models.EmailField()
+    cpf = models.CharField(max_length=11)
 
+    class Meta:
+        managed = False  # Indica que essa tabela/visão é apenas leitura
+        db_table = 'v_tela_classeestudante'  # Nome da sua view no banco
 
 class Responsavel(models.Model):
     idestudante = models.ForeignKey(
@@ -123,19 +134,22 @@ class Aula(models.Model):
 
 class Classe(models.Model):
     classe = models.CharField(max_length=10, null=True, blank=True)
-    estudante = models.ForeignKey(Estudante, on_delete=models.SET_NULL, null=True, db_column='idestudante')
-    professor = models.ForeignKey(Professor, on_delete=models.CASCADE, db_column='idprofessor', related_name='classes')
     aula = models.ForeignKey(Aula, on_delete=models.CASCADE, db_column='idaula', related_name='classes')
-    idestudante = models.ManyToManyField(Estudante, related_name='classes', blank=True)
+    idclasse = models.ManyToManyField(Estudante, related_name='classes', blank=True)
     dataCriacao = models.DateTimeField(auto_now_add=True)
-    # segunda = models.CharField(max_length=50, null=True, blank=True)
-    # terca = models.CharField(max_length=50, null=True, blank=True)
-    # quarta = models.CharField(max_length=50, null=True, blank=True)
-    # quinta = models.CharField(max_length=50, null=True, blank=True)
-    # sexta = models.CharField(max_length=50, null=True, blank=True)
+
 
     def __str__(self):
         return f"{self.classe} - {self.estudante.nome}"
 
     class Meta:
         db_table = 'classe'  # Nome da tabela no banco de dados
+
+
+class Presenca(models.Model):
+    estudante = models.OneToOneField(
+        EstudanteClasse,  # Relaciona com a view VTelaClasseEstudante
+        on_delete=models.CASCADE,  # O que acontece se o estudante for excluído
+        primary_key=True,  # Define estudante como a chave primária
+    )
+    presenca = models.BooleanField(default=False)  # Campo de presença

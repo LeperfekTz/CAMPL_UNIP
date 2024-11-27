@@ -15,6 +15,6 @@ urlpatterns = [
     path('adicionar-estudante-responsavel/', views.adicionar_estudante_responsavel, name='adicionar_estudante_responsavel'),
     path('excluir_professor/excluir/<int:professor_id>/', views.excluir_professor, name='excluir_professor'),
     path('excluir_estudante/excluir/<int:estudante_id>/', views.excluir_estudante, name='excluir_estudante'),
-    path('adicionar_classe/', views.adicionar_classe, name='adicionar_classe'),
-    path('adicionar_alunos_na_classe/<int:classe_id>/', views.adicionar_alunos_na_classe, name='adicionar_alunos_na_classe'),
+
+    
 ]
