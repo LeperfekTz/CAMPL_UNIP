@@ -1,69 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
   <head>
     <meta charset="UTF-8" />
-    <title>Lista de Estudantes</title>
-    <script>
-      // Função para filtrar estudantes com base na classe
-      function filtrarAlunosPorClasse() {
-        var classeId = document.getElementById('id').value;  // Pega o id da classe selecionada
-        
-        // Faz a requisição para o endpoint de busca dos estudantes
-        fetch('/buscar_estudantes_por_classe/?id=' + classeId)
-          .then(response => response.json())  // Recebe a resposta como JSON
-          .then(data => {
-            // Limpa a tabela de estudantes
-            var tbody = document.getElementById('estudantesTableBody');
-            tbody.innerHTML = '';
-            
-            // Adiciona os estudantes à tabela
-            data.forEach(function(estudante) {
-              var row = document.createElement('tr');
-              row.innerHTML = `
-                <td>${estudante.id}</td>
-                <td>${estudante.nome}</td>
-                <td>${estudante.email}</td>
-                <td>${estudante.telefone}</td>
-              `;
-              tbody.appendChild(row);
-            });
-          })
-          .catch(error => {
-            console.error('Erro:', error);
-          });
-      }
-    </script>
+    <title>Lista de Alunos</title>
   </head>
   <body>
-    <h1>Estudantes</h1>
+    <h1>Alunos</h1>
 
-    <form method="GET" onsubmit="event.preventDefault(); filtrarAlunosPorClasse();">
-      <label for="id">Classe:</label>
-      <select name="classe" id="id">
-        <option value="">Todas as Classes</option>
+    <!-- Formulário para filtrar por classe -->
+    <form method="GET" action="/lista_classes/">
+      <label for="classe">Classe:</label>
+      <select name="idclasse" id="classe">
+        <option value="">Selecione uma Classe</option>
         {% for classe in classes %}
-          <option value="{{ classe.id }}">{{ classe.classe }}</option>
+            <option value="{{ classe.id }}" {% if request.GET.idclasse == classe.id|stringformat:"s" %} selected {% endif %}>
+
+            {{ classe.classe }}
+          </option>
         {% endfor %}
       </select>
       <button type="submit">Filtrar</button>
     </form>
 
+    <!-- Exibição dos alunos filtrados -->
+    <h2>Alunos da Classe Selecionada</h2>
     <table border="1">
       <thead>
         <tr>
-          <th>ID</th>
+          <th>ID Aluno</th>
           <th>Nome</th>
           <th>Email</th>
-          <th>Cpf</th>
+          <th>Telefone</th>
         </tr>
       </thead>
-      <tbody id="estudantesTableBody">
-        {% for estudante in estudantes %}
+      <tbody>
+        {% for aluno in alunos %}
           <tr>
-            <td>{{ estudante.nis }}</td>
-            <td>{{ estudante.nome }}</td>
-            <td>{{ estudante.email }}</td>
-            <td>{{ estudante.cpf }}</td>
+            <td>{{ aluno.id }}</td>
+            <td>{{ aluno.nome }}</td>
+            <td>{{ aluno.email }}</td>
+            <td>{{ aluno.telefone }}</td>
           </tr>
         {% endfor %}
       </tbody>

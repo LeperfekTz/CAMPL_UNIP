@@ -146,17 +146,23 @@ def lista_professores(request):
     professores = Professor.objects.select_related('usuario').all()
     return render(request, 'lista_professores.html', {'professores': professores})
 
+
 def lista_classes(request):
-    # Obtendo todas as classes
+    # Obter todas as classes da base de dados
     classes = Classe.objects.all()
 
-    if request.method == 'GET' and 'idclasse' in request.GET:
-        id_classe = request.GET['idclasse']
-        estudantes = Estudante.objects.filter(idclasse=id_classe)
-    else:
-        estudantes = Estudante.objects.all()
+    # Obter o id da classe selecionada (se houver)
+    id_classe = request.GET.get('idclasse')
 
-    return render(request, 'lista_classes.html', {'classes': classes, 'estudantes': estudantes})
+    # Filtrar alunos se id_classe for fornecido
+    if id_classe:
+        alunos = Estudante.objects.filter(idclasse_id=id_classe)
+
+    else:
+        alunos = Estudante.objects.all()
+
+    # Renderizar o template passando as classes e os alunos
+    return render(request, 'lista_classes.html', {'classes': classes, 'alunos': alunos})
 
 def lista_aulas(request):
     aulas = Aula.objects.all()
