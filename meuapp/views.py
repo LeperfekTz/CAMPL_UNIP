@@ -147,14 +147,16 @@ def lista_professores(request):
     return render(request, 'lista_professores.html', {'professores': professores})
 
 def lista_classes(request):
-    classes = v_tela_classeEstudante.objects.values('id').distinct()
-    id_classe = request.POST.get('id')
-    estudantes = (
-        v_tela_classeEstudante.objects.filter(id=id_classe)
-        if id_classe else
-        v_tela_classeEstudante.objects.all()
-    )
-    return render(request, 'lista_classes.html', {'estudantes': estudantes, 'classes': classes})
+    # Obtendo todas as classes
+    classes = Classe.objects.all()
+
+    if request.method == 'GET' and 'idclasse' in request.GET:
+        id_classe = request.GET['idclasse']
+        estudantes = Estudante.objects.filter(idclasse=id_classe)
+    else:
+        estudantes = Estudante.objects.all()
+
+    return render(request, 'lista_classes.html', {'classes': classes, 'estudantes': estudantes})
 
 def lista_aulas(request):
     aulas = Aula.objects.all()
@@ -169,9 +171,14 @@ def pagina_inicial(request):
         'total_classe': Classe.objects.count(),
     })
 
+
 def buscar_alunos_por_classe(request):
-    id_classe = request.GET.get('id')
-    alunos = v_tela_classeEstudante.objects.filter(id=id_classe).values(
-        'id', 'nome', 'email', 'telefone'
-    )
-    return JsonResponse(list(alunos), safe=False)
+    id_classe = request.GET.get('id')  # Obtém o id da classe do parâmetro GET
+    if id_classe:
+        # Filtra os alunos com base no id da classe
+        estudante = v_tela_classeEstudante.objects.filter(id=id_classe).values(
+            'id', 'nome', 'email', 'cpf'
+        )
+        return JsonResponse(list(estudante), safe=False)  # Retorna os dados em formato JSON
+    else:
+        return JsonResponse({'error': 'Classe não encontrada'}, status=400)  # Caso o id da classe não seja fornecido

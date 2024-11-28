@@ -3,17 +3,46 @@
   <head>
     <meta charset="UTF-8" />
     <title>Lista de Estudantes</title>
+    <script>
+      // Função para filtrar estudantes com base na classe
+      function filtrarAlunosPorClasse() {
+        var classeId = document.getElementById('id').value;  // Pega o id da classe selecionada
+        
+        // Faz a requisição para o endpoint de busca dos estudantes
+        fetch('/buscar_estudantes_por_classe/?id=' + classeId)
+          .then(response => response.json())  // Recebe a resposta como JSON
+          .then(data => {
+            // Limpa a tabela de estudantes
+            var tbody = document.getElementById('estudantesTableBody');
+            tbody.innerHTML = '';
+            
+            // Adiciona os estudantes à tabela
+            data.forEach(function(estudante) {
+              var row = document.createElement('tr');
+              row.innerHTML = `
+                <td>${estudante.id}</td>
+                <td>${estudante.nome}</td>
+                <td>${estudante.email}</td>
+                <td>${estudante.telefone}</td>
+              `;
+              tbody.appendChild(row);
+            });
+          })
+          .catch(error => {
+            console.error('Erro:', error);
+          });
+      }
+    </script>
   </head>
   <body>
     <h1>Estudantes</h1>
 
-    <form method="POST" action="/lista_classes/">
-      {% csrf_token %}
+    <form method="GET" onsubmit="event.preventDefault(); filtrarAlunosPorClasse();">
       <label for="id">Classe:</label>
       <select name="classe" id="id">
         <option value="">Todas as Classes</option>
         {% for classe in classes %}
-          <option value="{{ classe.id }}">{{ classe.nome }}</option>  <!-- Campo correto para nome da classe -->
+          <option value="{{ classe.id }}">{{ classe.classe }}</option>
         {% endfor %}
       </select>
       <button type="submit">Filtrar</button>
@@ -22,16 +51,16 @@
     <table border="1">
       <thead>
         <tr>
-          <th>ID_Classe</th>
+          <th>ID</th>
           <th>Nome</th>
           <th>Email</th>
           <th>Cpf</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody id="estudantesTableBody">
         {% for estudante in estudantes %}
           <tr>
-            <td>{{ estudante.classe.id }}</td>  <!-- Exibindo o ID da classe -->
+            <td>{{ estudante.nis }}</td>
             <td>{{ estudante.nome }}</td>
             <td>{{ estudante.email }}</td>
             <td>{{ estudante.cpf }}</td>
