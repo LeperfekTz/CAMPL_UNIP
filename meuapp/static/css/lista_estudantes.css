@@ -99,19 +99,23 @@ body {
     height: 16px;
     margin-right: 5px;
 }
-
 /* Tabela */
 .table-container {
     overflow-x: auto;
-    background: white;
+    background: rgba(255, 255, 255, 0.7); /* Fundo com transparência */
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(8px); /* Efeito de desfoque */
+    padding: 10px; /* Espaçamento interno */
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
     min-width: 600px;
+    border: 1px solid #ddd; /* Borda da tabela */
+    border-radius: 8px;
+    overflow: hidden; /* Evita que bordas apareçam fora da área visível */
 }
 
 table thead {
@@ -141,7 +145,6 @@ table .btn-editar {
     background-color: #fff;
     border: 1px solid #ddd;
 }
-
 
 table .btn-editar:hover {
     background-color: #4caf50;

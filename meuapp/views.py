@@ -188,3 +188,16 @@ def buscar_alunos_por_classe(request):
         return JsonResponse(list(estudante), safe=False)  # Retorna os dados em formato JSON
     else:
         return JsonResponse({'error': 'Classe não encontrada'}, status=400)  # Caso o id da classe não seja fornecido
+    
+def marcar_presenca(request):
+    if request.method == 'POST':
+        import json
+        data = json.loads(request.body)
+        aluno_id = data.get('aluno_id')
+        presente = data.get('presente')
+
+        aluno = Estudante.objects.get(id=aluno_id)
+        aluno.presente = presente  # Supondo que você tenha um campo 'presente' no seu modelo
+        aluno.save()
+
+        return JsonResponse({'status': 'sucesso'})

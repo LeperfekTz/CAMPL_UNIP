@@ -2,47 +2,102 @@
 <html lang="pt-br">
   <head>
     <meta charset="UTF-8" />
-    <title>Lista de Alunos</title>
+    <title>Lista de Alunos - Futurista</title>
+    {% load static %}
+
+    <link rel="stylesheet" href="{% static 'css/lista_classes.css' %}" />
   </head>
   <body>
-    <h1>Alunos</h1>
+    <div class="container">
+      <!-- Barra lateral -->
+      <div class="sidebar">
+        <h2>Menu</h2>
+        <ul>
+          <li><a href="/">Início</a></li>
+          <li><a href="/lista_estudantes">Estudantes</a></li>
+          <li><a href="/lista_professores">Professores</a></li>
+          <li><a href="/lista_classes" class="active">Classes</a></li>
+          <li><a href="/lista_aulas">Aulas</a></li>
+        </ul>
+      </div>
 
-    <!-- Formulário para filtrar por classe -->
-    <form method="GET" action="/lista_classes/">
-      <label for="classe">Classe:</label>
-      <select name="idclasse" id="classe">
-        <option value="">Selecione uma Classe</option>
-        {% for classe in classes %}
-            <option value="{{ classe.id }}" {% if request.GET.idclasse == classe.id|stringformat:"s" %} selected {% endif %}>
+      <!-- Conteúdo principal -->
+      <div class="main-content">
+        <h1>Alunos</h1>
 
-            {{ classe.classe }}
-          </option>
-        {% endfor %}
-      </select>
-      <button type="submit">Filtrar</button>
-    </form>
+        <!-- Formulário para filtrar por classe -->
+        <form method="GET" action="/lista_classes/">
+          <label for="classe">Classe:</label>
+          <select name="idclasse" id="classe">
+            <option value="">Selecione uma Classe</option>
+            {% for classe in classes %}
+              <option value="{{ classe.id }}" {% if request.GET.idclasse == classe.id|stringformat:"s" %} selected {% endif %}>
+                {{ classe.classe }}
+              </option>
+            {% endfor %}
+          </select>
+          <button type="submit">Filtrar</button>
+        </form>
 
-    <!-- Exibição dos alunos filtrados -->
-    <h2>Alunos da Classe Selecionada</h2>
-    <table border="1">
-      <thead>
-        <tr>
-          <th>ID Aluno</th>
-          <th>Nome</th>
-          <th>Email</th>
-          <th>Telefone</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for aluno in alunos %}
-          <tr>
-            <td>{{ aluno.id }}</td>
-            <td>{{ aluno.nome }}</td>
-            <td>{{ aluno.email }}</td>
-            <td>{{ aluno.telefone }}</td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+        <!-- Exibição dos alunos filtrados -->
+        <h2>Alunos da Classe Selecionada</h2>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>NIS</th>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>CPF</th>
+                <th>Presença</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for aluno in alunos %}
+                <tr>
+                  <td>{{ aluno.nis }}</td>
+                  <td>{{ aluno.nome }}</td>
+                  <td>{{ aluno.email }}</td>
+                  <td>{{ aluno.cpf }}</td>
+                  <td>
+                    <input type="checkbox" class="presenca" data-aluno-id="{{ aluno.id }}">
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Contador de presentes -->
+        <div class="contador-presenca">
+          <span id="contador-presentes">Presentes: 0</span>
+        </div>
+
+        <!-- Botão para salvar presença -->
+        <button id="salvar-presenca" onclick="salvarPresenca()">Salvar Presença</button>
+
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const checkboxes = document.querySelectorAll('.presenca');
+        const contadorPresentes = document.getElementById('contador-presentes'); // Local para exibir a contagem de presentes
+
+        // Função para atualizar o contador de presentes
+        function atualizarContador() {
+          const presentes = Array.from(checkboxes).filter(checkbox => checkbox.checked).length;
+          contadorPresentes.textContent = `Presentes: ${presentes}`;
+        }
+
+        // Adiciona um listener para cada checkbox
+        checkboxes.forEach(checkbox => {
+          checkbox.addEventListener('change', atualizarContador);
+        });
+
+        // Inicializa o contador
+        atualizarContador();
+      });
+    </script>
   </body>
 </html>
