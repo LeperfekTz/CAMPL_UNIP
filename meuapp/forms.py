@@ -5,7 +5,7 @@ from .models import Estudante, Usuario, Responsavel, Classe
 class EstudanteForm(forms.ModelForm):
     class Meta:
         model = Estudante
-        fields = ['nome', 'email', 'telefone', 'cpf', 'rg', 'nis', 'observacao', 'grupoprioridade', 'registro', 'encaminhamento', 'URLimagem', 'rua', 'bairro', 'cidade', 'estado', 'cep']
+        fields = ['nome', 'email', 'telefone', 'cpf', 'rg', 'nis', 'observacao', 'grupoprioridade', 'registro', 'encaminhamento', 'URLimagem', 'rua', 'bairro', 'cidade', 'estado', 'cep', 'idclasse']
 
 class ResponsavelForm(forms.ModelForm):
     class Meta:
