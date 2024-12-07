@@ -1,5 +1,5 @@
 # Usa a imagem oficial do Python
-FROM python:3.11
+FROM python:3.12
 
 # Define o diretório de trabalho
 WORKDIR /app

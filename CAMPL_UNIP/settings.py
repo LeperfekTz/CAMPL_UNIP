@@ -81,8 +81,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'campl_test',       # Nome do banco de dados
         'USER': 'Owner',            # Usuário do MySQL
-        'PASSWORD': 'Leperfekt210822.',    # Senha do MySQL
-        'HOST': 'mysql_db',         # Nome do serviço no Docker Compose
+        'PASSWORD': 'Leperfekt210822.',   
+        'HOST': '192.168.15.3',     # Endereço IP do MySQL
         'PORT': '3306',             # Porta padrão do MySQL
     }
 }
