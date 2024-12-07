@@ -1,0 +1,51 @@
+version: '3.9'
+
+services:
+  mysql_db:
+    image: mysql:8.0
+    container_name: mysql_db
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: campl_test
+      MYSQL_USER: Owner
+      MYSQL_PASSWORD: Owner_password
+      TZ: UTC
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql-init:/docker-entrypoint-initdb.d
+      - /usr/share/zoneinfo:/usr/share/zoneinfo:ro
+    command: --default-authentication-plugin=mysql_native_password --host-cache-size=0
+    networks:
+      - app_network
+
+  django_app:
+    build: .
+    container_name: django_app
+    environment:
+      - DEBUG=1
+      - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
+      - DATABASE_NAME=campl_test
+      - DATABASE_USER=Owner
+      - DATABASE_PASSWORD=Leperfekt210822.
+      - DATABASE_HOST=mysql_db
+      - DATABASE_PORT=3306
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mysql_db
+    volumes:
+      - .:/app
+    networks:
+      - app_network
+    command: >
+      bash -c "python manage.py makemigrations &&
+               python manage.py migrate &&
+               python manage.py runserver 0.0.0.0:8000"
+
+volumes:
+  mysql_data:
+
+networks:
+  app_network:

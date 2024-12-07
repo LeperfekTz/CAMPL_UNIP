@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-tlj3m%u!ng%-yb4q^_u_ld=o3gci5rd^%fhgq)bv38nm7xh56r
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.15.3', 'localhost', '127.0.0.1', '*']
 
 
 # Application definition
@@ -79,13 +79,14 @@ WSGI_APPLICATION = 'CAMPL_UNIP.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'campl_test',
-        'USER': 'root',
-        'PASSWORD': '2002',
-        'HOST': '127.0.0.1',
-        'PORT': '3306',  # ou a porta correta, se não for o padrão
+        'NAME': 'campl_test',       # Nome do banco de dados
+        'USER': 'Owner',            # Usuário do MySQL
+        'PASSWORD': 'Leperfekt210822.',    # Senha do MySQL
+        'HOST': 'mysql_db',         # Nome do serviço no Docker Compose
+        'PORT': '3306',             # Porta padrão do MySQL
     }
 }
+
 
 
 # Password validation
