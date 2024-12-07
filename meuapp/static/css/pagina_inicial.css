@@ -143,7 +143,7 @@ header p {
 
 .card p {
     font-size: 2em;
-    margin-bottom: 15px;
+    margin-bottom: 12%;
 }
 
 .card a {
@@ -156,7 +156,7 @@ header p {
 }
 
 .card a:hover {
-    background-color: #243eb2;
+    background-color: #24b253;
 }
 
 
