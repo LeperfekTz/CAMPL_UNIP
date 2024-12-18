@@ -141,7 +141,7 @@ class V_tela_estudante(models.Model):
 
 # Modelo de View Classe Estudante
 class v_tela_classeEstudante(models.Model):
-    id = models.IntegerField(primary_key=True)
+    #id = models.IntegerField(primary_key=True)
     nome = models.CharField(max_length=255)
     email = models.EmailField()
     cpf = models.CharField(max_length=11)

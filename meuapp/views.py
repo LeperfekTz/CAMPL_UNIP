@@ -204,7 +204,24 @@ def marcar_presenca(request):
         return JsonResponse({'status': 'sucesso'})
     
 def avaliacao(request):
-    estudantes = Estudante.objects.all()
-    professores = Professor.objects.select_related('usuario').all()
-    classes = Classe.objects.all()
-    return render(request, 'avaliacao.html', {'estudantes': estudantes, "professores": professores, "classes": classes})
+    # Obter o id da classe da query string (se presente)
+    classe_id = request.GET.get('classe_id', None)
+    professores = Professor.objects.all()
+
+    # Se houver um id de classe na URL, filtra os estudantes e professores
+    if classe_id:
+        estudantes = Estudante.objects.filter(idclasse_id=classe_id)  # Usar idclasse_id para filtrar
+    else:
+        # Caso não haja um filtro, pega todos os estudantes e professores
+        estudantes = Estudante.objects.all()
+    
+    # Passa os dados para o template
+    return render(
+        request,
+        'avaliacao.html',
+        {
+            'estudantes': estudantes,
+            'professores': professores,
+            'classes': Classe.objects.all(),
+        }
+    )

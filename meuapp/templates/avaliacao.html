@@ -6,7 +6,6 @@
     <title>Avaliação de Aluno</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/avaliacao.css' %}?v=1.0" />
-    <!-- Adicionando o Favicon -->
     <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon" />
   </head>
   <body>
@@ -34,50 +33,40 @@
             {% csrf_token %}
             <div class="form-group">
               <label for="classe">Selecione a Classe:</label>
-              <select id="classe" name="classe" required>
+              <select
+                id="classe"
+                name="classe"
+                required
+                onchange="filtrarEstudantesProfessores()"
+              >
                 <option value="" disabled selected>Selecione uma classe</option>
                 {% for classe in classes %}
-                <option value="{{ classe.id }}">{{ classe.classe }}</option>
-                {% endfor %}
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label for="professor">Selecione o Professor:</label>
-              <select id="professor" name="professor" disabled required>
-                {% for professor in professores %}
-                <option value="{{ professor.id }}">
-                  {{ professor.usuario.nome }}
-                </option>
+                  <option value="{{ classe.id }}" {% if classe.id == request.GET.classe_id %}selected{% endif %}>
+                    {{ classe.classe }}
+                  </option>
                 {% endfor %}
               </select>
             </div>
 
             <div class="form-group">
               <label for="estudante">Selecione o Estudante:</label>
-              <select id="estudante" name="estudante" disabled required>
+              <select id="estudante" name="estudante" required>
                 {% for estudante in estudantes %}
-                <option value="{{ estudante.id }}">
-                  {{ estudante.nome }}
-                </option>
+                  <option value="{{ estudante.id }}">{{ estudante.nome }}</option>
                 {% endfor %}
               </select>
             </div>
 
-            <!-- Lista de Matérias -->
-            <table>
-              <thead>
-                <tr>
-                  <th>Matéria</th>
-                  <th>Professor</th>
-                  <th>Status</th>
-                  <th>Comentários</th>
-                </tr>
-              </thead>
-              <tbody>
-                <!-- Aqui você pode iterar pelas matérias relacionadas ao aluno, se necessário -->
-              </tbody>
-            </table>
+            <div class="form-group">
+              <label for="professor">Selecione o Professor:</label>
+              <select id="professor" name="professor" required>
+                {% for professor in professores %}
+                  <option value="{{ professor.id }}">
+                    {{ professor.usuario.nome }}
+                  </option>
+                {% endfor %}
+              </select>
+            </div>
 
             <!-- Comentários Gerais -->
             <div class="form-group">
@@ -97,26 +86,13 @@
     </div>
 
     <script>
-      // Habilitar campo professor quando uma classe for selecionada
-      document.getElementById('classe').addEventListener('change', function() {
-        var professorSelect = document.getElementById('professor');
-        if (this.value) {
-          professorSelect.disabled = false;
-        } else {
-          professorSelect.disabled = true;
-          document.getElementById('estudante').disabled = true; // Desabilita estudante se classe não estiver selecionada
+      function filtrarEstudantesProfessores() {
+        var classeId = document.getElementById("classe").value;
+        if (classeId) {
+          // Redireciona para a mesma página, com o filtro aplicado para classe
+          window.location.href = "/avaliacao/?classe_id=" + classeId;
         }
-      });
-
-      // Habilitar campo estudante quando um professor for selecionado
-      document.getElementById('professor').addEventListener('change', function() {
-        var estudanteSelect = document.getElementById('estudante');
-        if (this.value) {
-          estudanteSelect.disabled = false;
-        } else {
-          estudanteSelect.disabled = true;
-        }
-      });
+      }
     </script>
   </body>
 </html>
