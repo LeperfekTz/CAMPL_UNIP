@@ -149,3 +149,15 @@ class v_tela_classeEstudante(models.Model):
     class Meta:
         managed = False
         db_table = 'v_tela_classeEstudante'
+
+
+class Avaliacao(models.Model):
+    professor = models.ForeignKey('Professor', on_delete=models.CASCADE)
+    aluno = models.ForeignKey('Estudante', on_delete=models.CASCADE)
+    aula = models.ForeignKey('Aula', on_delete=models.CASCADE)
+    status = models.CharField(max_length=50)  # Ex: "Presente", "Ausente", "Atrasado"
+    idclasse = models.ForeignKey(Classe, on_delete=models.CASCADE)
+    comentario = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return f"Avaliação de {self.aluno} na aula {self.aula}"

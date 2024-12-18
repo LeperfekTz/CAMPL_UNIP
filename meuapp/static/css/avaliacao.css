@@ -74,6 +74,29 @@ body {
     color: #333;
 }
 
+.materias-container {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.materias-container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.materias-container th, .materias-container td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.materias-container th {
+  background-color: #4caf50;
+}
+
 h1 {
   font-size: 1.8rem;
   color: #333;

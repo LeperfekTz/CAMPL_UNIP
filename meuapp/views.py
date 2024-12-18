@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 from .models import (
     Estudante, Professor, Aula, Classe,
-    V_tela_estudante, v_tela_classeEstudante
+    V_tela_estudante, v_tela_classeEstudante, Avaliacao
 )
 from .forms import EstudanteForm, ProfessorForm, ResponsavelForm, ClasseForm
 
@@ -167,34 +167,21 @@ def marcar_presenca(request):
         return JsonResponse({'status': 'sucesso'})
     
 def avaliacao(request):
-    # Obter o id da classe da query string (se presente)
-    classe_id = request.GET.get('classe_id', None)
-    professores = Professor.objects.all()
-
-    # Se houver um id de classe na URL, filtra os estudantes e professores
-    if classe_id:
-        estudantes = Estudante.objects.filter(idclasse_id=classe_id)  # Usar idclasse_id para filtrar
+    idclasse = request.GET.get('idclasse')  # Certifique-se de usar 'idclasse' no filtro
+    if idclasse:
+        estudantes = Estudante.objects.filter(idclasse=idclasse)
+        professores = Professor.objects.filter(idclasse=idclasse)
+        materias = Avaliacao.objects.filter(idclasse=idclasse)
     else:
-        # Caso não haja um filtro, pega todos os estudantes e professores
         estudantes = Estudante.objects.all()
-    
-    # Passa os dados para o template
-    return render(
-        request,
-        'avaliacao.html',
-        {
-            'estudantes': estudantes,
-            'professores': professores,
-            'classes': Classe.objects.all(),
-        }
-    )
+        professores = Professor.objects.all()
+        materias = None
 
-# def mostrar_aulas(request, professor_id):
-#     # Obtenha o Professor e as aulas relacionadas a ele
-#     Professor = Professor.objects.get(id=professor_id)
-#     aulas = Aula.objects.filter(Professor=Professor)
+    classes = Classe.objects.all()
 
-#     return render(request, 'avaliacao.html', {
-#         'Professor': Professor,
-#         'aulas': aulas,
-#     })
+    return render(request, 'avaliacao.html', {
+        'classes': classes,
+        'estudantes': estudantes,
+        'professores': professores,
+        'materias': materias,
+    })

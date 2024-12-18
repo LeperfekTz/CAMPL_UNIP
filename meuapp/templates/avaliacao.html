@@ -40,16 +40,16 @@
                 onchange="filtrarEstudantesProfessores()"
               >
                 <option value="" disabled selected>Selecione uma classe</option>
-                {% for classe in classes %}
-                  <option value="{{ classe.id }}" {% if classe.id == request.GET.classe_id %}selected{% endif %}>
-                    {{ classe.classe }}
-                  </option>
+                {% for classe in classes %} 
+                  <option value="{{ classe.id }}" {% if classe.id == request.GET.idclasse|stringformat:"s" %}selected{% endif %}>
+    {{ classe.classe }}
+</option>
                 {% endfor %}
               </select>
             </div>
 
             <div class="form-group">
-              <label for="estudante">Selecione o Estudante:</label>
+              <label for="estudante">Selecione o Estudante:</label> 
               <select id="estudante" name="estudante" required>
                 {% for estudante in estudantes %}
                   <option value="{{ estudante.id }}">{{ estudante.nome }}</option>
@@ -62,11 +62,37 @@
               <select id="professor" name="professor" required>
                 {% for professor in professores %}
                   <option value="{{ professor.id }}">
-                    {{ professor.usuario.nome }}
+                    {{ professor.nome }}
                   </option>
                 {% endfor %}
               </select>
             </div>
+
+            <!-- Tabela para matérias -->
+        <div class="materias-container">
+          <h3>Matérias do Aluno Selecionado</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Matéria</th>
+                <th>Professor</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for aula in aulas %}
+                  <tr>
+                    <td>{{ aula.nome }}</td>
+                    <td>{{ aluno.descricao }}</td>
+                    <td>{{ status }} </td>
+                  </tr>
+                {% endfor %}
+                <tr>
+                  <td colspan="3">Nenhuma matéria associada ao aluno selecionado.</td>
+                </tr>
+            </tbody>
+          </table>
+        </div>
 
             <!-- Comentários Gerais -->
             <div class="form-group">
@@ -89,10 +115,10 @@
       function filtrarEstudantesProfessores() {
         var classeId = document.getElementById("classe").value;
         if (classeId) {
-          // Redireciona para a mesma página, com o filtro aplicado para classe
-          window.location.href = "/avaliacao/?classe_id=" + classeId;
+            // Altere para usar idclasse
+            window.location.href = "/avaliacao/?idclasse=" + classeId;
         }
-      }
+    }
     </script>
   </body>
 </html>
