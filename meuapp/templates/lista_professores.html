@@ -47,9 +47,9 @@
                     <tbody>
                         {% for professor in professores %}
                         <tr>
-                            <td>{{ professor.usuario.nome }}</td>
-                            <td>{{ professor.usuario.email }}</td>
-                            <td>{{ professor.usuario.telefone }}</td>
+                            <td>{{ professor.nome }}</td>
+                            <td>{{ professor.email }}</td>
+                            <td>{{ professor.telefone }}</td>
                             <td>{{ professor.cnpj }}</td>
                             <td>
                                 <a href="{% url 'editar_professor' professor.id %}" class="btn-editar">

@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.http import JsonResponse
 from .models import (
-    Estudante, Professor, Aula, Classe, Usuario, 
+    Estudante, Professor, Aula, Classe,
     V_tela_estudante, v_tela_classeEstudante
 )
 from .forms import EstudanteForm, ProfessorForm, ResponsavelForm, ClasseForm
@@ -33,55 +33,25 @@ def adicionar_professor(request):
     if request.method == 'POST':
         form = ProfessorForm(request.POST)
         if form.is_valid():
-            usuario = form.save(commit=False)
-            usuario.papel = 'professor'
-            usuario.save()
+            professor = form.save(commit=False)  # Cria a instância do Professor sem salvar ainda
 
-            if Professor.objects.filter(usuario=usuario).exists():
-                messages.error(request, 'Este usuário já está associado a um professor.')
+            # Verificar se o professor já existe (exemplo usando o email)
+            if Professor.objects.filter(email=professor.email).exists():
+                messages.error(request, 'Este email já está associado a um Professor.')
                 return redirect('adicionar_professor')
 
-            Professor.objects.create(usuario=usuario)
+            professor.save()  # Agora salva o professor no banco de dados
+
             messages.success(request, 'Professor adicionado com sucesso!')
-            return redirect('lista_professores')
+            return redirect('lista_professores')  # Redireciona para a lista de professores
     else:
-        form = ProfessorForm()
+        form = ProfessorForm()  # Caso seja GET, cria um novo formulário vazio
 
     return render(request, 'adicionar_professor.html', {'form': form})
 
-def adicionar_classe(request):
-    if request.method == "POST":
-        form = ClasseForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('lista_classes')
-    else:
-        form = ClasseForm()
-
-    return render(request, 'adicionar_classe.html', {'form': form})
-
-def adicionar_estudante_na_classe(request, classe_id):
-    classe = get_object_or_404(Classe, id=classe_id)
-    estudantes = Estudante.objects.all()
-
-    if request.method == "POST":
-        estudante_selecionados = request.POST.getlist('estudante')
-        classe.estudantes.set(estudante_selecionados)
-        classe.save()
-        return redirect('lista_classes')
-
-    return render(request, 'adicionar_estudante_na_classe.html', {
-        'classe': classe,
-        'estudantes': estudantes,
-    })
 
 # --- Views de Exclusão ---
 
-def excluir_objeto(request, model_class, object_id, redirect_url):
-    obj = get_object_or_404(model_class, id=object_id)
-    obj.delete()
-    messages.success(request, f'{model_class.__name__} excluído com sucesso!')
-    return redirect(redirect_url)
 
 def excluir_estudante(request, estudante_id):
     estudante = get_object_or_404(Estudante, id=estudante_id)  # Obtém o estudante ou retorna 404
@@ -91,20 +61,11 @@ def excluir_estudante(request, estudante_id):
 
 def excluir_professor(request, professor_id):
     professor = get_object_or_404(Professor, id=professor_id)
-
-    # Verificar se o professor está associado a qualquer classe ou aula
-    if Aula.objects.filter(professor=professor).exists():
-        messages.error(request, 'Este professor está associado a classes ou aulas e não pode ser excluído.')
-        return redirect('lista_professores')
-
-    # Excluir o usuário associado, se não estiver sendo usado em outros lugares
-    if professor.usuario:
-        professor.usuario.delete()
-
-    # Excluir o professor
+    # Excluir o Professor
     professor.delete()
     messages.success(request, 'Professor excluído com sucesso!')
     return redirect('lista_professores')
+
 
 # --- Views de Edição ---
 
@@ -122,19 +83,19 @@ def editar_estudante(request, id):
     return render(request, 'editar_estudante.html', {'form': form, 'estudante': estudante})
 
 def editar_professor(request, id):
-    professor = get_object_or_404(Professor, pk=id)
-    usuario = professor.usuario
+    professor = get_object_or_404(Professor, pk=id)  # Obter a instância do Professor
 
     if request.method == 'POST':
-        form = ProfessorForm(request.POST, instance=usuario)
+        form = ProfessorForm(request.POST, instance=professor)  # Preencher o formulário com os dados do professor
         if form.is_valid():
-            form.save()
+            form.save()  # Salvar as alterações no banco de dados
             messages.success(request, 'Professor atualizado com sucesso!')
-            return redirect('lista_professores')
+            return redirect('lista_professores')  # Redirecionar após a atualização
     else:
-        form = ProfessorForm(instance=usuario)
+        form = ProfessorForm(instance=professor)  # Preencher o formulário com os dados do professor para o GET
 
     return render(request, 'editar_professor.html', {'form': form, 'professor': professor})
+
 
 # --- Views de Listagem ---
 
@@ -143,7 +104,9 @@ def lista_estudantes(request):
     return render(request, 'lista_estudantes.html', {'estudantes': estudantes})
 
 def lista_professores(request):
-    professores = Professor.objects.select_related('usuario').all()
+    # Consulta todos os professores diretamente
+    professores = Professor.objects.all()
+    
     return render(request, 'lista_professores.html', {'professores': professores})
 
 
@@ -225,3 +188,13 @@ def avaliacao(request):
             'classes': Classe.objects.all(),
         }
     )
+
+# def mostrar_aulas(request, professor_id):
+#     # Obtenha o Professor e as aulas relacionadas a ele
+#     Professor = Professor.objects.get(id=professor_id)
+#     aulas = Aula.objects.filter(Professor=Professor)
+
+#     return render(request, 'avaliacao.html', {
+#         'Professor': Professor,
+#         'aulas': aulas,
+#     })

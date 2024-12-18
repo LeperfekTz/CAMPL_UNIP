@@ -1,6 +1,6 @@
 
 from django import forms
-from .models import Estudante, Usuario, Responsavel, Classe
+from .models import Estudante, Professor, Responsavel, Classe
 
 class EstudanteForm(forms.ModelForm):
     class Meta:
@@ -19,5 +19,5 @@ class ClasseForm(forms.ModelForm):
 
 class ProfessorForm(forms.ModelForm):
     class Meta:
-        model = Usuario
-        fields = ['nome', 'email', 'telefone', 'rua', 'bairro', 'cidade', 'estado', 'cep']
+        model = Professor
+        fields = ['nome', 'email', 'telefone', 'rua', 'bairro', 'cidade', 'estado', 'cep', 'cnpj', 'idclasse']
