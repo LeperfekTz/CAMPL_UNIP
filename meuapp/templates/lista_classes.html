@@ -49,9 +49,9 @@
               <tr>
                 <th>NIS</th>
                 <th>Nome</th>
-                <th>Email</th>
-                <th>CPF</th>
-                <th>Presença</th>
+                <th>Falta turno 1</th>
+                <th>Falta turno 2</th>
+
               </tr>
             </thead>
             <tbody>
@@ -59,10 +59,12 @@
                 <tr>
                   <td>{{ aluno.nis }}</td>
                   <td>{{ aluno.nome }}</td>
-                  <td>{{ aluno.email }}</td>
-                  <td>{{ aluno.cpf }}</td>
+
                   <td>
                     <input type="checkbox" class="presenca" data-aluno-id="{{ aluno.id }}">
+                  </td>
+                  <td>
+                    <input type="checkbox" >
                   </td>
                 </tr>
               {% endfor %}
@@ -76,7 +78,7 @@
         </div>
 
         <!-- Botão para salvar presença -->
-        <button id="salvar-presenca" onclick="salvarPresenca()">Salvar Presença</button>
+        <button id="salvar-presenca" onclick="salvarPresenca()">Salvar </button>
 
       </div>
     </div>
@@ -89,7 +91,7 @@
         // Função para atualizar o contador de presentes
         function atualizarContador() {
           const presentes = Array.from(checkboxes).filter(checkbox => checkbox.checked).length;
-          contadorPresentes.textContent = `Presentes: ${presentes}`;
+          contadorPresentes.textContent = `Alunos que faltaram: ${presentes}`;
         }
 
         // Adiciona um listener para cada checkbox
