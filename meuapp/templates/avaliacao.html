@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Avaliação de aluno</title>
+    <title>Avaliação de Aluno</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/avaliacao.css' %}?v=1.0" />
+    <!-- Adicionando o Favicon -->
+    <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon" />
   </head>
   <body>
     <div class="container">
@@ -27,12 +29,13 @@
         <h1>Avaliação de Aluno</h1>
 
         <main>
-          <!-- Seleções -->
+          <!-- Formulário de Avaliação -->
           <form method="POST">
             {% csrf_token %}
             <div class="form-group">
               <label for="classe">Selecione a Classe:</label>
-              <select id="classe" name="classe">
+              <select id="classe" name="classe" required>
+                <option value="" disabled selected>Selecione uma classe</option>
                 {% for classe in classes %}
                 <option value="{{ classe.id }}">{{ classe.classe }}</option>
                 {% endfor %}
@@ -41,9 +44,9 @@
 
             <div class="form-group">
               <label for="professor">Selecione o Professor:</label>
-              <select id="professor" name="professor">
+              <select id="professor" name="professor" disabled required>
                 {% for professor in professores %}
-                <option value="{{ professor.usuario.id }}">
+                <option value="{{ professor.id }}">
                   {{ professor.usuario.nome }}
                 </option>
                 {% endfor %}
@@ -51,10 +54,12 @@
             </div>
 
             <div class="form-group">
-              <label for="estudante">Selecione o Aluno:</label>
-              <select id="estudante" name="estudante">
+              <label for="estudante">Selecione o Estudante:</label>
+              <select id="estudante" name="estudante" disabled required>
                 {% for estudante in estudantes %}
-                <option value="{{ estudante.id }}">{{ estudante.nome }}</option>
+                <option value="{{ estudante.id }}">
+                  {{ estudante.nome }}
+                </option>
                 {% endfor %}
               </select>
             </div>
@@ -90,5 +95,28 @@
         </main>
       </div>
     </div>
+
+    <script>
+      // Habilitar campo professor quando uma classe for selecionada
+      document.getElementById('classe').addEventListener('change', function() {
+        var professorSelect = document.getElementById('professor');
+        if (this.value) {
+          professorSelect.disabled = false;
+        } else {
+          professorSelect.disabled = true;
+          document.getElementById('estudante').disabled = true; // Desabilita estudante se classe não estiver selecionada
+        }
+      });
+
+      // Habilitar campo estudante quando um professor for selecionado
+      document.getElementById('professor').addEventListener('change', function() {
+        var estudanteSelect = document.getElementById('estudante');
+        if (this.value) {
+          estudanteSelect.disabled = false;
+        } else {
+          estudanteSelect.disabled = true;
+        }
+      });
+    </script>
   </body>
 </html>
