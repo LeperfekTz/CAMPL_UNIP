@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Avaliação de aluno</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/avaliacao.css' %}?v=1.0" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Barra lateral -->
+      <div class="sidebar">
+        <h2>Menu</h2>
+        <ul>
+          <li><a href="{% url 'pagina_inicial' %}">Início</a></li>
+          <li><a href="{% url 'lista_estudantes' %}">Estudantes</a></li>
+          <li><a href="{% url 'lista_professores' %}">Professores</a></li>
+          <li><a href="{% url 'lista_classes' %}">Chamada</a></li>
+          <li><a href="{% url 'lista_aulas' %}">Aulas</a></li>
+          <li><a href="{% url 'avaliacao' %}" class="active">Avaliação</a></li>
+        </ul>
+      </div>
+
+      <!-- Conteúdo principal -->
+      <div class="main-content">
+        <h1>Avaliação de Aluno</h1>
+
+        <main>
+          <!-- Seleções -->
+          <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="classe">Selecione a Classe:</label>
+              <select id="classe" name="classe">
+                {% for classe in classes %}
+                <option value="{{ classe.id }}">{{ classe.classe }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="professor">Selecione o Professor:</label>
+              <select id="professor" name="professor">
+                {% for professor in professores %}
+                <option value="{{ professor.usuario.id }}">
+                  {{ professor.usuario.nome }}
+                </option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="estudante">Selecione o Aluno:</label>
+              <select id="estudante" name="estudante">
+                {% for estudante in estudantes %}
+                <option value="{{ estudante.id }}">{{ estudante.nome }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <!-- Lista de Matérias -->
+            <table>
+              <thead>
+                <tr>
+                  <th>Matéria</th>
+                  <th>Professor</th>
+                  <th>Status</th>
+                  <th>Comentários</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Aqui você pode iterar pelas matérias relacionadas ao aluno, se necessário -->
+              </tbody>
+            </table>
+
+            <!-- Comentários Gerais -->
+            <div class="form-group">
+              <label for="general-comments">Comentários Gerais:</label>
+              <textarea
+                id="general-comments"
+                name="general-comments"
+                placeholder="Adicione comentários gerais sobre o aluno."
+              ></textarea>
+            </div>
+
+            <!-- Botão Salvar -->
+            <button type="submit" class="btn">Salvar Avaliação</button>
+          </form>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>

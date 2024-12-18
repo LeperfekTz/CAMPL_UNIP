@@ -82,7 +82,7 @@ DATABASES = {
         'NAME': 'campl_test',       # Nome do banco de dados
         'USER': 'Owner',            # Usuário do MySQL
         'PASSWORD': 'Leperfekt210822.',   
-        'HOST': '192.168.15.3',     # Endereço IP do MySQL
+        'HOST': '192.168.15.130',     # Endereço IP do MySQL
         'PORT': '3306',             # Porta padrão do MySQL
     }
 }

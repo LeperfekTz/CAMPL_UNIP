@@ -13,11 +13,13 @@
       <div class="sidebar">
         <h2>Menu</h2>
         <ul>
-          <li><a href="/">Início</a></li>
-          <li><a href="/lista_estudantes">Estudantes</a></li>
-          <li><a href="/lista_professores">Professores</a></li>
-          <li><a href="/lista_classes" class="active">Chamada</a></li>
-          <li><a href="/lista_aulas">Aulas</a></li>
+          <li><a href="{% url 'pagina_inicial' %}">Início</a></li>
+                <li><a href="{% url 'lista_estudantes' %}">Estudantes</a></li>
+                <li><a href="{% url 'lista_professores' %}">Professores</a></li>
+                <li><a href="{% url 'lista_classes' %}"class="active">Chamada</a></li>
+                <li><a href="{% url 'lista_aulas' %}">Aulas</a></li>
+                <li><a href="{% url 'avaliacao' %}">Avaliação</a></li>
+
         </ul>
       </div>
 

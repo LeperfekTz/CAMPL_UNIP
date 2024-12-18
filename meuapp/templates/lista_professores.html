@@ -18,6 +18,9 @@
                 <li><a href="{% url 'lista_professores' %}" class="active">Professores</a></li>
                 <li><a href="{% url 'lista_classes' %}">Chamada</a></li>
                 <li><a href="{% url 'lista_aulas' %}">Aulas</a></li>
+                <li><a href="{% url 'avaliacao' %}">Avaliação</a></li>
+
+                
             </ul>
         </aside>
 
@@ -37,6 +40,7 @@
                             <th>Nome</th>
                             <th>E-mail</th>
                             <th>Telefone</th>
+                            <th>CNPJ</th>
                             <th>Ação</th>
                         </tr>
                     </thead>
@@ -46,6 +50,7 @@
                             <td>{{ professor.usuario.nome }}</td>
                             <td>{{ professor.usuario.email }}</td>
                             <td>{{ professor.usuario.telefone }}</td>
+                            <td>{{ professor.cnpj }}</td>
                             <td>
                                 <a href="{% url 'editar_professor' professor.id %}" class="btn-editar">
                                     <img src="../static/icons/editar.svg" alt="Editar" class="icon"> Editar

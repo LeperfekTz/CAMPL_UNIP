@@ -178,6 +178,7 @@ def pagina_inicial(request):
     })
 
 
+
 def buscar_alunos_por_classe(request):
     id_classe = request.GET.get('id')  # Obtém o id da classe do parâmetro GET
     if id_classe:
@@ -201,3 +202,9 @@ def marcar_presenca(request):
         aluno.save()
 
         return JsonResponse({'status': 'sucesso'})
+    
+def avaliacao(request):
+    estudantes = Estudante.objects.all()
+    professores = Professor.objects.select_related('usuario').all()
+    classes = Classe.objects.all()
+    return render(request, 'avaliacao.html', {'estudantes': estudantes, "professores": professores, "classes": classes})

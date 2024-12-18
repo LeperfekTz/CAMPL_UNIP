@@ -13,6 +13,7 @@ urlpatterns = [
     path('adicionar-estudante-responsavel/', views.adicionar_estudante_responsavel, name='adicionar_estudante_responsavel'),
     path('excluir_professor/excluir/<int:professor_id>/', views.excluir_professor, name='excluir_professor'),
     path('excluir_estudante/excluir/<int:estudante_id>/', views.excluir_estudante, name='excluir_estudante'),
+    path('avaliacao/', views.avaliacao, name='avaliacao'),
 
     
 ]

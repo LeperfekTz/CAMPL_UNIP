@@ -6,6 +6,12 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/editar_professor.css' %}?v=1.0">
     <title>Editar Professor</title>
+    <script>
+        function updateCharCount(inputElement, counterElement, maxLength) {
+            const currentLength = inputElement.value.length;
+            counterElement.textContent = `${currentLength} /${maxLength}`;
+        }
+    </script>
 </head>
 <body>
     <div class="container">
@@ -14,7 +20,28 @@
             <form method="POST">
                 {% csrf_token %}
                 <div class="form-group">
-                    {{ form.as_p }}
+                    {% for field in form %}
+                        <div class="field-container">
+                            <label for="id_{{ field.name }}">{{ field.label }}</label>
+                            {{ field }}
+                            <span id="counter-{{ forloop.counter }}" class="char-counter">0 (/{{ field.field.widget.attrs.maxlength }})</span>
+                        </div>
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                const field = document.getElementById("id_{{ field.name }}");
+                                const counter = document.getElementById("counter-{{ forloop.counter }}");
+                                const maxLength = field ? field.getAttribute("maxlength") : 0;
+
+                                if (field) {
+                                    field.addEventListener('input', function() {
+                                        updateCharCount(field, counter, maxLength);
+                                    });
+                                    // Initialize the counter on page load
+                                    updateCharCount(field, counter, maxLength);
+                                }
+                            });
+                        </script>
+                    {% endfor %}
                 </div>
                 <button type="submit" class="submit-button">Salvar</button>
             </form>

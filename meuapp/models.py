@@ -8,7 +8,7 @@ class Estudante(models.Model):
     cpf = models.CharField(max_length=30, unique=True)
     rg = models.CharField(max_length=30, unique=True)
     nis = models.CharField(max_length=100, blank=True, null=True)
-    observacao = models.CharField(max_length=100, blank=True, null=True)
+    observacao = models.CharField(max_length=500, blank=True, null=True)
     grupoprioridade = models.CharField(max_length=20, blank=True, null=True)
     registro = models.CharField(max_length=50)
     encaminhamento = models.CharField(max_length=30, blank=True, null=True)
@@ -84,6 +84,7 @@ class Usuario(models.Model):
             ('emprego', 'Emprego'),
         ]
     )
+    #cjpj = models.CharField(max_length=14, blank=True, null=True)
     dataCriacao = models.DateTimeField(auto_now_add=True)
 
     class Meta:
