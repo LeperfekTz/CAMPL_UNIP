@@ -9,7 +9,9 @@
     <script>
         function updateCharCount(inputElement, counterElement, maxLength) {
             const currentLength = inputElement.value.length;
-            counterElement.textContent = `${currentLength} /${maxLength}`;
+            counterElement.textContent = maxLength 
+                ? `${currentLength} / ${maxLength}` 
+                : `${currentLength}`;
         }
     </script>
 </head>
@@ -24,15 +26,19 @@
                         <div class="field-container">
                             <label for="id_{{ field.name }}">{{ field.label }}</label>
                             {{ field }}
-                            <span id="counter-{{ forloop.counter }}" class="char-counter">0 (/{{ field.field.widget.attrs.maxlength }})</span>
+                            {% if field.field.widget.attrs.maxlength %}
+                                <span id="counter-{{ forloop.counter }}" class="char-counter">
+                                    0 / {{ field.field.widget.attrs.maxlength }}
+                                </span>
+                            {% endif %}
                         </div>
                         <script>
                             document.addEventListener('DOMContentLoaded', function() {
                                 const field = document.getElementById("id_{{ field.name }}");
                                 const counter = document.getElementById("counter-{{ forloop.counter }}");
-                                const maxLength = field ? field.getAttribute("maxlength") : 0;
+                                const maxLength = field ? field.getAttribute("maxlength") : null;
 
-                                if (field) {
+                                if (field && maxLength) {
                                     field.addEventListener('input', function() {
                                         updateCharCount(field, counter, maxLength);
                                     });

@@ -33,23 +33,18 @@
             {% csrf_token %}
             <div class="form-group">
               <label for="classe">Selecione a Classe:</label>
-              <select
-                id="classe"
-                name="classe"
-                required
-                onchange="filtrarEstudantesProfessores()"
-              >
+              <select id="classe" name="classe" required onchange="filtrarEstudantesProfessores()">
                 <option value="" disabled selected>Selecione uma classe</option>
-                {% for classe in classes %} 
+                {% for classe in classes %}
                   <option value="{{ classe.id }}" {% if classe.id == request.GET.idclasse|stringformat:"s" %}selected{% endif %}>
-    {{ classe.classe }}
-</option>
+                    {{ classe.classe }}
+                  </option>
                 {% endfor %}
               </select>
             </div>
 
             <div class="form-group">
-              <label for="estudante">Selecione o Estudante:</label> 
+              <label for="estudante">Selecione o Estudante:</label>
               <select id="estudante" name="estudante" required>
                 {% for estudante in estudantes %}
                   <option value="{{ estudante.id }}">{{ estudante.nome }}</option>
@@ -68,31 +63,52 @@
               </select>
             </div>
 
-            <!-- Tabela para matérias -->
-        <div class="materias-container">
-          <h3>Matérias do Aluno Selecionado</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>Matéria</th>
-                <th>Professor</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for aula in aulas %}
+            <!-- Tabela para avaliações -->
+            <div class="materias-container">
+              <h3>Avaliações dos Estudantes Selecionados</h3>
+              <table>
+                <thead>
                   <tr>
-                    <td>{{ aula.nome }}</td>
-                    <td>{{ aluno.descricao }}</td>
-                    <td>{{ status }} </td>
+                    <th>Estudante</th>
+                    <th>Professor</th>
+                    <th>Status</th>
+                    <th>Comentários</th>
+                  </tr>
+                </thead>
+                <tbody>
+                {% for avaliacao in avaliacoes %}
+                  <tr>
+                    <td>{{ avaliacao.estudante.nome }}</td>
+                    <td>{{ avaliacao.professor.nome }}</td>
+                    <td>
+                      <label>
+                        <input type="checkbox" name="status_1_{{ avaliacao.id }}" {% if avaliacao.status_1 %}checked{% endif %}>
+                        Status 1
+                      </label>
+                      <label>
+                        <input type="checkbox" name="status_2_{{ avaliacao.id }}" {% if avaliacao.status_2 %}checked{% endif %}>
+                        Status 2
+                      </label>
+                      <label>
+                        <input type="checkbox" name="status_3_{{ avaliacao.id }}" {% if avaliacao.status_3 %}checked{% endif %}>
+                        Status 3
+                      </label>
+                    </td>
+                    <td>{{ avaliacao.comentario }}</td>
+                    <td>
+                      {% for aula in avaliacao.aula.all %}
+                        <span>{{ aula.nome }}</span>
+                      {% endfor %}
+                    </td>
+                  </tr>
+                {% empty %}
+                  <tr>
+                    <td colspan="5">Nenhuma avaliação disponível.</td>
                   </tr>
                 {% endfor %}
-                <tr>
-                  <td colspan="3">Nenhuma matéria associada ao aluno selecionado.</td>
-                </tr>
-            </tbody>
-          </table>
-        </div>
+              </tbody>
+              </table>
+            </div>
 
             <!-- Comentários Gerais -->
             <div class="form-group">
@@ -114,11 +130,11 @@
     <script>
       function filtrarEstudantesProfessores() {
         var classeId = document.getElementById("classe").value;
-        if (classeId) {
-            // Altere para usar idclasse
-            window.location.href = "/avaliacao/?idclasse=" + classeId;
-        }
-    }
+      if (classeId) { 
+      // Redireciona com o parâmetro idclasse
+      window.location.href = "/avaliacao/?idclasse=" + classeId;
+  }
+}
     </script>
   </body>
 </html>

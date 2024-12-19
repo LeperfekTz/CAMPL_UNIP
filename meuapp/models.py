@@ -4,11 +4,11 @@ from django.db import models
 # Modelo de Estudante
 class Estudante(models.Model):
     nome = models.CharField(max_length=50)
-    email = models.EmailField(max_length=50, unique=True)
+    email = models.EmailField(unique=True)
     cpf = models.CharField(max_length=30, unique=True)
     rg = models.CharField(max_length=30, unique=True)
     nis = models.CharField(max_length=100, blank=True, null=True)
-    observacao = models.CharField(max_length=500, blank=True, null=True)
+    observacao = models.CharField(max_length=100, blank=True, null=True)
     grupoprioridade = models.CharField(max_length=20, blank=True, null=True)
     registro = models.CharField(max_length=50)
     encaminhamento = models.CharField(max_length=30, blank=True, null=True)
@@ -20,7 +20,14 @@ class Estudante(models.Model):
     estado = models.CharField(max_length=2)
     cep = models.CharField(max_length=20)
     dataCriacao = models.DateTimeField(auto_now_add=True)
-    idclasse = models.ForeignKey('Classe', on_delete=models.CASCADE, db_column='idclasse', blank=True, null=True)
+    idclasse = models.ForeignKey(
+        'Classe',
+        on_delete=models.SET_NULL,
+        db_column='idclasse',
+        blank=True,
+        null=True,
+        related_name='estudantes'
+    )
 
     class Meta:
         db_table = 'estudante'
@@ -45,14 +52,8 @@ class Classe(models.Model):
 # Modelo de Aula
 class Aula(models.Model):
     nome = models.CharField(max_length=25)
-    dia_choices = [
-        ('Segunda', 'Segunda'),
-        ('Terça', 'Terça'),
-        ('Quarta', 'Quarta'),
-        ('Quinta', 'Quinta'),
-        ('Sexta', 'Sexta'),
-    ]
-    dia = models.CharField(max_length=7, choices=dia_choices)
+    classe = models.ForeignKey(Classe, on_delete=models.CASCADE, related_name='aulas')  # Change related_name here
+
 
     class Meta:
         db_table = 'aula'
@@ -65,26 +66,16 @@ class Aula(models.Model):
 class Professor(models.Model):
     nome = models.CharField(max_length=50)
     email = models.EmailField(max_length=50, unique=True)
-    #senha = models.CharField(max_length=50)
-    #URLimagem = models.URLField(max_length=100, blank=True, null=True)
     telefone = models.CharField(max_length=20)
     rua = models.CharField(max_length=50, blank=True, null=True)
     bairro = models.CharField(max_length=50, blank=True, null=True)
     cidade = models.CharField(max_length=50)
     estado = models.CharField(max_length=2)
     cep = models.CharField(max_length=20)
+    cnpj = models.CharField(max_length=18, blank=True, null=True)
     idclasse = models.ForeignKey('Classe', on_delete=models.CASCADE, db_column='idclasse', blank=True, null=True)
-    # papel = models.CharField(
+
     
-    #     max_length=20,
-    #     choices=[
-    #         ('professor', 'Professor'),
-    #         ('gerente', 'Gerente'),
-    #         ('integracao', 'Integração'),
-    #         ('emprego', 'Emprego'),
-    #     ]
-    # )
-    cnpj = models.CharField(max_length=14, blank=True, null=True)
     dataCriacao = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -92,24 +83,6 @@ class Professor(models.Model):
 
     def __str__(self):
         return self.nome
-
-
-# Modelo de Professor
-# class Professor(models.Model):
-#     usuario = models.OneToOneField(
-#         Usuario,
-#         on_delete=models.CASCADE,
-#         db_column='idusuario',
-#         related_name='professor',
-#     )
-#     dataCriacao = models.DateTimeField(auto_now_add=True)
-
-#     class Meta:
-#         db_table = 'professor'
-
-#     def __str__(self):
-#         return f"Professor: {self.usuario.nome}"
-
 
 # Modelo de Responsável
 class Responsavel(models.Model):
@@ -150,14 +123,20 @@ class v_tela_classeEstudante(models.Model):
         managed = False
         db_table = 'v_tela_classeEstudante'
 
-
 class Avaliacao(models.Model):
-    professor = models.ForeignKey('Professor', on_delete=models.CASCADE)
-    aluno = models.ForeignKey('Estudante', on_delete=models.CASCADE)
-    aula = models.ForeignKey('Aula', on_delete=models.CASCADE)
-    status = models.CharField(max_length=50)  # Ex: "Presente", "Ausente", "Atrasado"
-    idclasse = models.ForeignKey(Classe, on_delete=models.CASCADE)
-    comentario = models.TextField(blank=True, null=True)
+    professor = models.ForeignKey(Professor, on_delete=models.CASCADE)
+    estudante = models.ForeignKey(Estudante, on_delete=models.CASCADE)
+    aula = models.CharField(max_length=255)
+    status = models.CharField(max_length=30)
+    comentario = models.TextField()
+
+    class Meta:
+        managed = False
+        db_table = 'avaliacao'
+
+
 
     def __str__(self):
-        return f"Avaliação de {self.aluno} na aula {self.aula}"
+        return f"Avaliação de {self.aluno} por {self.professor}"
+
+

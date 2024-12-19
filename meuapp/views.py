@@ -167,21 +167,23 @@ def marcar_presenca(request):
         return JsonResponse({'status': 'sucesso'})
     
 def avaliacao(request):
-    idclasse = request.GET.get('idclasse')  # Certifique-se de usar 'idclasse' no filtro
+    idclasse = request.GET.get('idclasse')  # Obtém o ID da classe selecionada
+    
     if idclasse:
-        estudantes = Estudante.objects.filter(idclasse=idclasse)
+        # Obtém os estudantes e as aulas da classe selecionada
         professores = Professor.objects.filter(idclasse=idclasse)
-        materias = Avaliacao.objects.filter(idclasse=idclasse)
+        estudantes = Estudante.objects.filter(idclasse=idclasse)
+        aulas = Aula.objects.all()
     else:
-        estudantes = Estudante.objects.all()
         professores = Professor.objects.all()
-        materias = None
+        estudantes = Estudante.objects.all()
+        aulas = Aula.objects.all()
 
     classes = Classe.objects.all()
 
     return render(request, 'avaliacao.html', {
         'classes': classes,
         'estudantes': estudantes,
+        'aulas': aulas,
         'professores': professores,
-        'materias': materias,
     })
