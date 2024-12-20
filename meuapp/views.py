@@ -1,11 +1,12 @@
+
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
-from django.http import JsonResponse
+from django.db import connection
 from .models import (
     Estudante, Professor, Aula, Classe,
-    V_tela_estudante, v_tela_classeEstudante, Avaliacao
+    V_tela_estudante, 
 )
-from .forms import EstudanteForm, ProfessorForm, ResponsavelForm, ClasseForm
+from .forms import EstudanteForm, ProfessorForm, ResponsavelForm, AulaForm
 
 # --- Views de Adição ---
 
@@ -49,6 +50,16 @@ def adicionar_professor(request):
 
     return render(request, 'adicionar_professor.html', {'form': form})
 
+def adicionar_aula(request):
+    if request.method == 'POST':
+        form = AulaForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('lista_aulas')
+    else:
+        form = AulaForm()
+    return render(request, 'adicionar_aula.html', {'form': form})
+
 
 # --- Views de Exclusão ---
 
@@ -65,6 +76,11 @@ def excluir_professor(request, professor_id):
     professor.delete()
     messages.success(request, 'Professor excluído com sucesso!')
     return redirect('lista_professores')
+
+def excluir_aula(request, pk):
+    aula = get_object_or_404(Aula, pk=pk)
+    aula.delete()
+    return redirect('lista_aulas')
 
 
 # --- Views de Edição ---
@@ -96,7 +112,16 @@ def editar_professor(request, id):
 
     return render(request, 'editar_professor.html', {'form': form, 'professor': professor})
 
-
+def editar_aula(request, pk):
+    aula = get_object_or_404(Aula, pk=pk)
+    if request.method == 'POST':
+        form = AulaForm(request.POST, instance=aula)
+        if form.is_valid():
+            form.save()
+            return redirect('lista_aulas')
+    else:
+        form = AulaForm(instance=aula)
+    return render(request, 'editar_aula.html', {'form': form})
 # --- Views de Listagem ---
 
 def lista_estudantes(request):
@@ -109,28 +134,32 @@ def lista_professores(request):
     
     return render(request, 'lista_professores.html', {'professores': professores})
 
+def lista_classe(request):
+    classes = Classe.objects.all()
+    return render(request, 'lista_classe.html', {'classes': classes})
 
-def lista_classes(request):
+def lista_aulas(request):
+    aulas = Aula.objects.all()
+    return render(request, 'lista_aulas.html', {'aulas': aulas})
+
+
+# --- Outras Views ---
+
+def chamada(request):
     # Obter todas as classes da base de dados
     classes = Classe.objects.all()
 
     # Obter o id da classe selecionada (se houver)
-    id_classe = request.GET.get('idclasse')
+    idclasse = request.GET.get('idclasse')
 
-    # Filtrar alunos se id_classe for fornecido
-    if id_classe:
-        alunos = Estudante.objects.filter(idclasse_id=id_classe)
+    if idclasse:
+        alunos = Estudante.objects.filter(idclasse=idclasse)
 
     else:
         alunos = Estudante.objects.all()
 
     # Renderizar o template passando as classes e os alunos
-    return render(request, 'lista_classes.html', {'classes': classes, 'alunos': alunos})
-
-def lista_aulas(request):
-    aulas = Aula.objects.all()
-    return render(request, 'lista_aulas.html', {'aulas': aulas})
-# --- Outras Views ---
+    return render(request, 'chamada.html', {'classes': classes, 'alunos': alunos})
 
 def pagina_inicial(request):
     return render(request, 'pagina_inicial.html', {
@@ -139,32 +168,6 @@ def pagina_inicial(request):
         'total_aulas': Aula.objects.count(),
         'total_classe': Classe.objects.count(),
     })
-
-
-
-def buscar_alunos_por_classe(request):
-    id_classe = request.GET.get('id')  # Obtém o id da classe do parâmetro GET
-    if id_classe:
-        # Filtra os alunos com base no id da classe
-        estudante = v_tela_classeEstudante.objects.filter(id=id_classe).values(
-            'id', 'nome', 'email', 'cpf'
-        )
-        return JsonResponse(list(estudante), safe=False)  # Retorna os dados em formato JSON
-    else:
-        return JsonResponse({'error': 'Classe não encontrada'}, status=400)  # Caso o id da classe não seja fornecido
-    
-def marcar_presenca(request):
-    if request.method == 'POST':
-        import json
-        data = json.loads(request.body)
-        aluno_id = data.get('aluno_id')
-        presente = data.get('presente')
-
-        aluno = Estudante.objects.get(id=aluno_id)
-        aluno.presente = presente  # Supondo que você tenha um campo 'presente' no seu modelo
-        aluno.save()
-
-        return JsonResponse({'status': 'sucesso'})
     
 def avaliacao(request):
     idclasse = request.GET.get('idclasse')  # Obtém o ID da classe selecionada
@@ -186,4 +189,26 @@ def avaliacao(request):
         'estudantes': estudantes,
         'aulas': aulas,
         'professores': professores,
+    })
+
+
+def visualizar_classe(request, idclasse):
+    classe = get_object_or_404(Classe, pk=idclasse)  # Obtém a classe com o ID fornecido
+    professores = Professor.objects.filter(idclasse=idclasse)  # Filtra os professores da classe
+    alunos = Estudante.objects.filter(idclasse=idclasse)  # Filtra os alunos da classe
+
+    # Consulta SQL para pegar as aulas associadas à classe específica
+    query = """
+    SELECT a.id, a.nome
+    FROM aula a
+    JOIN classe c ON a.id = c.idaula
+    WHERE c.classe = %s;
+    """
+    aulas = Aula.objects.raw(query, [classe.classe])
+
+    return render(request, 'visualizar_classe.html', {
+        'classe': classe,
+        'professores': professores,
+        'alunos': alunos,
+        'aulas': aulas,
     })

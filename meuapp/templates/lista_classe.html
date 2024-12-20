@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Classes</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/lista_classe.css' %}?v=1.0">
+</head>
+<body>
+    <div class="container">
+        <!-- Barra lateral -->
+        <aside class="sidebar">
+            <h2>Menu</h2>
+            <ul>
+                <li><a href="{% url 'pagina_inicial' %}">Início</a></li>
+                <li><a href="{% url 'lista_estudantes' %}">Estudantes</a></li>
+                <li><a href="{% url 'lista_professores' %}">Professores</a></li>
+                <li><a href="{% url 'chamada' %}">Chamada</a></li>
+                <li><a href="{% url 'lista_aulas' %}">Aulas</a></li>
+                <li><a href="{% url 'lista_classe' %}" class="active">Classes</a></li>
+                <li><a href="{% url 'avaliacao' %}">Avaliação</a></li>
+            </ul>
+        </aside>
+
+        <!-- Conteúdo principal -->
+        <main class="main-content">
+            <header class="main-header">
+                <h1>Lista de Classes</h1>
+            </header>
+
+            <section class="table-container">
+                {% if classes %}
+                    <div class="classes-grid">
+                        {% for classe in classes %}
+                            <div class="class-item">
+                                <h3>{{ classe.classe }}</h3>
+                                <a href="{% url 'visualizar_classe' classe.id %}" class="btn-visualizar">Visualizar Classe</a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p>Não há classes cadastradas.</p>
+                {% endif %}
+            </section>
+        </main>
+    </div>
+</body>
+</html>

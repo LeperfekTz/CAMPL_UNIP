@@ -51,8 +51,8 @@ class Classe(models.Model):
 
 # Modelo de Aula
 class Aula(models.Model):
-    nome = models.CharField(max_length=25)
-    classe = models.ForeignKey(Classe, on_delete=models.CASCADE, related_name='aulas')  # Change related_name here
+    id = models.AutoField(primary_key=True)
+    nome = models.CharField(max_length=50)
 
 
     class Meta:
@@ -113,15 +113,6 @@ class V_tela_estudante(models.Model):
 
 
 # Modelo de View Classe Estudante
-class v_tela_classeEstudante(models.Model):
-    #id = models.IntegerField(primary_key=True)
-    nome = models.CharField(max_length=255)
-    email = models.EmailField()
-    cpf = models.CharField(max_length=11)
-
-    class Meta:
-        managed = False
-        db_table = 'v_tela_classeEstudante'
 
 class Avaliacao(models.Model):
     professor = models.ForeignKey(Professor, on_delete=models.CASCADE)
@@ -138,5 +129,3 @@ class Avaliacao(models.Model):
 
     def __str__(self):
         return f"Avaliação de {self.aluno} por {self.professor}"
-
-

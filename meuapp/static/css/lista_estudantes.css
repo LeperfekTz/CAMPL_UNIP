@@ -32,7 +32,6 @@ input[type="text"]:focus {
     position: sticky;
     top: 0;
     height: 100vh;
-    overflow-y: auto;
 }
 
 .sidebar h2 {
@@ -137,7 +136,7 @@ table td {
 
 /* Cabeçalho */
 table th {
-    background-color: #4caf50;
+background-color: #1e293b;
     color: white;
 }
 
@@ -206,6 +205,7 @@ table .btn-editar .icon {
 
     table {
         width: 100%;
+        
     }
 
     table th,

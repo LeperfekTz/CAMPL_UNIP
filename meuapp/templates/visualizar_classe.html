@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Classes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+        <!-- Conteúdo principal -->
+        <main class="flex-1 p-6">
+            <header class="flex justify-between items-center mb-6">
+                <h1 class="text-3xl font-semibold text-[#333]">Lista de Professores, Alunos e Aulas</h1>
+                
+                <!-- Botão de Voltar -->
+                <a href="{% url 'lista_classe' %}" class="flex items-center bg-[#4caf50] text-white px-4 py-2 rounded-lg hover:bg-[#388e3c] transition-colors">
+                    Voltar
+                </a>
+            </header>
+
+            <!-- Grid para exibir dados -->
+            <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Professores -->
+                <div class="bg-[#1e293b] p-6 rounded-lg shadow-lg">
+                    <h2 class="text-xl font-semibold text-white mb-4">Professores</h2>
+                    <ul class="text-white">
+                        {% for professor in professores %}
+                            <li class="py-2 border-b border-teal-400">{{ professor.nome }}</li>
+                        {% empty %}
+                            <li class="py-2">Não há professores cadastrados.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <!-- Alunos -->
+                <div class="bg-[#1e293b] p-6 rounded-lg shadow-lg">
+                    <h2 class="text-xl font-semibold text-white mb-4">Alunos</h2>
+                    <ul class="text-white">
+                        {% for aluno in alunos %}
+                            <li class="py-2 border-b border-indigo-400">{{ aluno.nome }}</li>
+                        {% empty %}
+                            <li class="py-2">Não há alunos cadastrados.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <!-- Aulas -->
+                <div class="bg-[#1e293b] p-6 rounded-lg shadow-lg">
+                    <h2 class="text-xl font-semibold text-white mb-4">Aulas</h2>
+                    <ul class="text-white">
+                        {% for aula in aulas %}
+                            <li class="py-2 border-b border-purple-400">{{ aula.nome }}</li>
+                        {% empty %}
+                            <li class="py-2">Não há aulas cadastradas.</li>
+                        {% endfor %}
+                    </ul>   
+                    <!-- Botão para adicionar mais aulas -->
+                    <div class="mt-4 flex justify-end">
+                        <a href="{% url 'adicionar_aula' %}" class="bg-[#4caf50] text-white px-4 py-2 rounded-lg hover:bg-[#388e3c] transition-colors">
+                            Adicionar Aulas
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+</body>
+</html>

@@ -9,19 +9,26 @@
 body {
     background-color: #f4f5f7;
     color: #333;
+    font-size: 1rem; /* Tamanho de fonte global */
 }
 
 /* Estrutura geral */
 .container {
     display: flex;
-    min-height: 100vh;
+    min-height: 100%;
 }
+
 /* Barra lateral */
 .sidebar {
     width: 250px;
     background-color: #1e293b;
     color: #fff;
     padding: 20px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    font-family: 'Arial', sans-serif; /* Especificando a fonte da barra lateral */
+    font-size: 1rem; /* Tamanho da fonte fixo para a barra lateral */
 }
 
 .sidebar h2 {
@@ -41,7 +48,7 @@ body {
 .sidebar ul li a {
     color: #cbd5e1;
     text-decoration: none;
-    font-size: 1rem;
+    font-size: 1rem; /* Tamanho da fonte fixo para os links */
     padding: 10px 15px;
     display: block;
     border-radius: 5px;
@@ -55,37 +62,160 @@ body {
 
 /* Conteúdo principal */
 .content {
-  flex: 1;
-  padding: 20px;
+    flex-grow: 1;
+    padding: 30px;
+    overflow-y: auto;
 }
 
-.schedule-container {
-  margin: 0 auto;
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.content h1 {
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+    color: #333;
 }
 
+/* Ajuste da tabela */
 table {
-  width: 100%;
-  border-collapse: collapse;
+    width: 80%; /* Reduz a largura da tabela */
+    max-width: 1000px; /* Limita a largura máxima da tabela */
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-th,
-td {
-  border: 1px solid #e5e5e5;
-  padding: 10px;
-  text-align: center;
+/* Ajuste das células */
+th, td {
+    padding: 8px 12px; /* Diminuir o espaçamento dentro das células */
+    font-size: 1rem; /* Reduzir o tamanho da fonte */
+    text-align: left;
+    border: 1px solid #e5e5e5;
 }
 
+/* Ajuste do cabeçalho */
+thead {
+    background-color: #1e293b;
+    color: #fff;
+}
+
+/* Centralizar texto no cabeçalho da tabela */
 th {
-  background-color: #f1f5f9;
-  font-weight: bold;
-  color: #333;
+    text-align: center; /* Centraliza o texto */
 }
 
-td {
-  background-color: #f9fbfc;
-  color: #333;
+/* Ajuste das células alternadas */
+tbody tr:nth-child(even) {
+    background-color: #f9fbfc;
+}
+
+/* Ajuste das células alternadas */
+tbody tr:nth-child(even) {
+    background-color: #f9fbfc;
+}
+
+/* Ajuste para os botões */
+table .btn-editar,
+table .btn-excluir {
+    font-size: 1rem; /* Tamanho menor para os botões */
+    padding: 4px 9px; /* Botões mais compactos */
+}
+
+a {
+    text-decoration: none;
+    color: #4caf50;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+a.button {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: #fff;
+    border-radius: 5px;
+    text-align: center;
+}
+
+a.button:hover {
+    background-color: #45a049;
+}
+
+/* Botão de editar */
+table .btn-editar {
+    display: inline-flex;
+    align-items: center;
+    color: #000000;
+    text-decoration: none;
+    font-size: 0.9rem;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+
+table .btn-editar:hover {
+    background-color: #4caf50;
+    color: #fff;
+}
+
+table .btn-editar .icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+}
+
+/* Botão de excluir */
+table .btn-excluir {
+    display: inline-flex;
+    align-items: center;
+    color: #000000;
+    text-decoration: none;
+    font-size: 0.9rem;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+
+table .btn-excluir:hover {
+    background-color: #af4c4c;
+    color: #fff;
+}
+
+table .btn-excluir .icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+}
+
+/* Alinhamento dos botões */
+table td:last-child {
+    text-align: center; /* Centraliza os botões nas células da última coluna */
+}
+
+/* Botão de adicionar */
+.btn-adicionar {
+    background-color: #4caf50;
+    color: white;
+    margin-top: 20px;
+}
+
+button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px; /* Espaço entre o ícone e o texto */
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+button .icon {
+    width: 16px;
+    height: 16px;
 }

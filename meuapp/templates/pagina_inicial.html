@@ -19,8 +19,9 @@
                 <li><a href="{% url 'pagina_inicial' %}" class="active">Início</a></li>
                 <li><a href="{% url 'lista_estudantes' %}">Estudantes</a></li>
                 <li><a href="{% url 'lista_professores' %}">Professores</a></li>
-                <li><a href="{% url 'lista_classes' %}">Chamada</a></li>
+                <li><a href="{% url 'chamada' %}">Chamada</a></li>
                 <li><a href="{% url 'lista_aulas' %}">Aulas</a></li>
+                <li><a href="{% url 'lista_classe' %}">Classes</a></li>
                 <li><a href="{% url 'avaliacao' %}">Avaliação</a></li>
             </ul>
         </div>
@@ -49,7 +50,7 @@
                 <div class="card">
                     <h3>Classes</h3>
                     <p>{{total_classe}} </p>
-                    <a href="{% url 'lista_classes' %}">Ver Classes</a>
+                    <a href="{% url 'lista_classe' %}">Ver Classes</a>
                 </div>
 
                 <div class="card">
